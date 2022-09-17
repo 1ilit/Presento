@@ -1,0 +1,8 @@
+﻿  Chunk.cpp
+C:\Users\Lilit\Desktop\Presento\Presento\Headers\MathHelper.h(146,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Lilit\Desktop\Presento\Presento\Headers\MathHelper.h(147,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Lilit\Desktop\Presento\Presento\Source\Chunk.cpp(17,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Lilit\Desktop\Presento\Presento\Source\Chunk.cpp(60,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
+  Presento.vcxproj -> C:\Users\Lilit\Desktop\Presento\Debug\Presento.exe
