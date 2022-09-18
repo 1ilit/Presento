@@ -1,27 +1,27 @@
 #pragma once
 
 #include "StartScreen.h"
-#include "MenuScreen.h"
+#include "CardScreen.h"
 #include "Achievements.h"
 #include "Play.h"
 
 class ScreenMgr {
 private:
 	enum SCREEN {
-		start,
-		menu,
-		ach,
-		play
+		START,
+		MENU,
+		ACHIEVEMENTS,
+		PLAY
 	};
 
 	static ScreenMgr* instance;
 
 	StartScreen* startScreen;
-	MenuScreen* menuScreen;
+	CardScreen* cardScreen;
 	Achievements* achScreen;
 	Play* playScreen;
 
-	SCREEN currentScreen;
+	SCREEN currentScreen=START;
 
 public:
 	bool started = false;

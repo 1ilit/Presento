@@ -1,5 +1,4 @@
 #pragma once
-#include "Chunk.h"
 #include "GUI.h"
 #include "World.h"
 

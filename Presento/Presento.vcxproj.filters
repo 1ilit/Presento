@@ -45,7 +45,7 @@
     <ClCompile Include="Source\InputMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MenuScreen.cpp">
+    <ClCompile Include="Source\CardScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Play.cpp">
@@ -101,7 +101,7 @@
     <ClInclude Include="Headers\MathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\MenuScreen.h">
+    <ClInclude Include="Headers\CardScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Play.h">

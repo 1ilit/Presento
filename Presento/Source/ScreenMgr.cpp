@@ -3,8 +3,6 @@
 ScreenMgr* ScreenMgr::instance = NULL;
 
 ScreenMgr* ScreenMgr::Instance() {
-	//std::cout << "screen\n";
-
 	if (!instance)
 		instance = new ScreenMgr();
 
@@ -19,21 +17,19 @@ void ScreenMgr::Release() {
 ScreenMgr::ScreenMgr() {
 	startScreen = new StartScreen();
 
-	menuScreen = new MenuScreen();
+	cardScreen = new CardScreen();
 
 	achScreen = new Achievements();
 
 	playScreen = new Play();
-
-	currentScreen = start;
 }
 
 ScreenMgr::~ScreenMgr() {
 	delete startScreen;
 	startScreen = NULL;
 
-	delete menuScreen;
-	menuScreen = NULL;
+	delete cardScreen;
+	cardScreen = NULL;
 
 	delete achScreen;
 	achScreen = NULL;
@@ -44,37 +40,37 @@ void ScreenMgr::Update() {
 	//std::cout << started<<'\n';
 
 	switch (currentScreen) {
-	case start:
+	case START:
 		startScreen->Update();
 		if (startScreen->Started()) {
-			currentScreen = menu;
+			currentScreen = MENU;
 			startScreen->SetFalse();
 		}
 		break;
 
-	case menu:
-		menuScreen->Update();
-		if (menuScreen->WentBack()) {
-			currentScreen = start;
-			menuScreen->SetClicked(false);
+	case MENU:
+		cardScreen->Update();
+		if (cardScreen->WentBack()) {
+			currentScreen = START;
+			cardScreen->SetClicked(false);
 		}
-		if (menuScreen->WentToAch()) {
-			currentScreen = ach;
-			menuScreen->SetAch(false);
+		if (cardScreen->WentToAch()) {
+			currentScreen = ACHIEVEMENTS;
+			cardScreen->SetAch(false);
 		}
-		if (menuScreen->GameStarted()) {
-			currentScreen = play;
-			menuScreen->SetFalse();
+		if (cardScreen->GameStarted()) {
+			currentScreen = PLAY;
+			cardScreen->SetFalse();
 		}
 		break;
-	case ach:
+	case ACHIEVEMENTS:
 		achScreen->Update();
 		if (achScreen->WentBack()) {
-			currentScreen = menu;
+			currentScreen = MENU;
 			achScreen->SetFalse();
 		}
 		break;
-	case play:
+	case PLAY:
 		playScreen->Update();
 		break;
 	}
@@ -83,17 +79,17 @@ void ScreenMgr::Update() {
 
 void ScreenMgr::Render() {
 	switch (currentScreen) {
-	case start:
+	case START:
 		startScreen->Render();
 		started = true;
 		break;
-	case menu:
-		menuScreen->Render();
+	case MENU:
+		cardScreen->Render();
 		break;
-	case ach:
+	case ACHIEVEMENTS:
 		achScreen->Render();
 		break;
-	case play:
+	case PLAY:
 		playScreen->Render();
 		break;
 	}

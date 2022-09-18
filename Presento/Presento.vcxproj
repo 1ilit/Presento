@@ -161,7 +161,7 @@
     <ClCompile Include="Source\GUI.cpp" />
     <ClCompile Include="Source\InputMgr.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\MenuScreen.cpp" />
+    <ClCompile Include="Source\CardScreen.cpp" />
     <ClCompile Include="Source\Play.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\ScreenMgr.cpp" />
@@ -181,7 +181,7 @@
     <ClInclude Include="Headers\GUI.h" />
     <ClInclude Include="Headers\InputMgr.h" />
     <ClInclude Include="Headers\MathHelper.h" />
-    <ClInclude Include="Headers\MenuScreen.h" />
+    <ClInclude Include="Headers\CardScreen.h" />
     <ClInclude Include="Headers\Play.h" />
     <ClInclude Include="Headers\Player.h" />
     <ClInclude Include="Headers\ScreenMgr.h" />

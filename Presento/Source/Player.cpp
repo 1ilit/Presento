@@ -50,8 +50,6 @@ void Player::Update() {
 		isJumping = false;
 		Pos(Vector2(Pos().x, groundHeight - 32));
 	}
-
-
 		
 	if (Pos().y >= groundHeight) {
 		Pos(Vector2(Pos().x, groundHeight));
