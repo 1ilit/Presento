@@ -37,8 +37,6 @@ ScreenMgr::~ScreenMgr() {
 }
 
 void ScreenMgr::Update() {
-	//std::cout << started<<'\n';
-
 	switch (currentScreen) {
 	case START:
 		startScreen->Update();

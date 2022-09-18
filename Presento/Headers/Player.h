@@ -1,8 +1,9 @@
 #pragma once
+#include "PhysicsEntity.h"
 #include "Texture.h"
 #include "GUI.h"
 
-class Player : public GameEntity {
+class Player : public PhysicsEntity {
 private:
 	InputMgr* input;
 	Timer* timer;

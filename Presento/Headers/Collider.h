@@ -8,7 +8,6 @@ private:
 	GameEntity* verts[n];
 	Texture* debugTex;
 
-
 private:
 	void AddVert(int index, Vector2 pos);
 

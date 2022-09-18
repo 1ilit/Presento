@@ -21,7 +21,7 @@ private:
 	Achievements* achScreen;
 	Play* playScreen;
 
-	SCREEN currentScreen=START;
+	SCREEN currentScreen=SCREEN::START;
 
 public:
 	bool started = false;

@@ -1,11 +1,13 @@
 #pragma once
 #include "GUI.h"
 #include "World.h"
+#include "Room.h"
 
 class Play :public GameEntity {
 private:
 	Player* p;
-	World* w;
+	Room* r;
+	
 
 public:
 	Play();

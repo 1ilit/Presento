@@ -6,7 +6,7 @@ StartScreen::StartScreen() {
 	background = new Texture("black_screen.png");
 	background->Parent(this);
 	background->Pos(Vector2(Graphics::Instance()->winWidth*0.5f, Graphics::Instance()->winHeight*0.5f));
-	background->Scale(Vector2(2.0f, 2.0f));
+	background->Scale(Vector2(2.5f, 2.0f));
 	
 	start = new Button("gift_box.png", 72, 72, Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight * 0.5f);
 	start->Scale(Vector2(2.0f, 2.0f));

@@ -30,7 +30,7 @@ CardScreen::CardScreen() {
 	right->Scale(Vector2(1.0f, 8.0f));
 	right->Pos(Vector2(Graphics::Instance()->winWidth * 0.96f, Graphics::Instance()->winHeight * 0.5f));
 
-	play = new Button("start_button.png", 100, 40, Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight * 0.9f);
+	play = new Button("ach_button.png", 50, 32, Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight * 0.9f);
 	play->Scale(Vector2(1.7f, 1.4f));
 
 	back = new Button("back.png", 64, 32, Graphics::Instance()->winWidth * 0.07f, Graphics::Instance()->winHeight * 0.07f);

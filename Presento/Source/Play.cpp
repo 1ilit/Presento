@@ -3,7 +3,7 @@
 Play::Play() {
 
 	p = new Player(Vector2(32.0f, Graphics::Instance()->winHeight-30.0f));
-	w = new World();
+	r = new Room();
 }
 
 Play::~Play() {
@@ -11,19 +11,19 @@ Play::~Play() {
 	delete p;
 	p = NULL;
 
-	delete w;
-	w = NULL;
+	delete r;
+	r = NULL;
 
 }
 
 
 void Play::Update() {
 	p->Update();
-	w->Update(p);
+	r->Update(p);
 }
 
 void Play::Render() {
 
-	w->Render();
+	r->Render();
 	p->Render();
 }

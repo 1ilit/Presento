@@ -10,6 +10,9 @@ Player::Player(Vector2 startPos) {
 	tex = new Texture("neko-san.png");
 	tex->Parent(this);
 	tex->Pos(VEC2_ZERO);
+	tex->Scale(Vector2(2.0f, 2.0f));
+
+	AddCollider(tex->ScaledDimensions());
 
 	yvel = 0.0f;
 }
