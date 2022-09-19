@@ -1,19 +1,16 @@
 #include "Play.h"
 
 Play::Play() {
-
-	p = new Player(Vector2(32.0f, Graphics::Instance()->winHeight-30.0f));
+	p = new Player(Vector2(102.0f, Graphics::Instance()->winHeight-96.0f));
 	r = new Room();
 }
 
 Play::~Play() {
-
 	delete p;
 	p = NULL;
 
 	delete r;
 	r = NULL;
-
 }
 
 
@@ -23,7 +20,6 @@ void Play::Update() {
 }
 
 void Play::Render() {
-
 	r->Render();
 	p->Render();
 }

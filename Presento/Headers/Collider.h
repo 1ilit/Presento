@@ -16,6 +16,8 @@ public:
 	~Collider();
 
 	bool IsColliding(Collider* other);
+	bool IsCollidingTop(Collider* other);
+	bool IsCollidingBottom(Collider* other);
 
 	void Render();
 };

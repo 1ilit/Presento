@@ -54,6 +54,21 @@ bool Collider::IsColliding(Collider* other) {
 	return true;
 }
 
+//checks if top of ``this`` collides with other
+//bru its true for the side tiles smh
+//add the !IsCollideringLeft or right
+bool Collider::IsCollidingTop(Collider* other) {
+	float topA = verts[0]->Pos().y;
+	float topB = other->verts[0]->Pos().y;
+	float bottomB = other->verts[2]->Pos().y;
+	
+	return topA <= bottomB && topA>=topB;
+}
+
+bool Collider::IsCollidingBottom(Collider* other) {
+	return false;
+}
+
 void Collider::Render() {
 	if (debug)
 		debugTex->Render();

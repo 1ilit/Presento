@@ -12,7 +12,7 @@ Tile::Tile(std::string fileName, int type) {
 
 Tile::~Tile() {
 	delete texture;
-	texture = NULL;
+	texture = NULL; 
 }
 
 void Tile::Update() {
