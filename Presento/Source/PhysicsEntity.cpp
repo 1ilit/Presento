@@ -14,8 +14,12 @@ bool PhysicsEntity::CheckCollision(PhysicsEntity* other) {
 	return collider->IsColliding(other->collider);
 }
 
-bool PhysicsEntity::CheckTopCollison(PhysicsEntity* other) {
+bool PhysicsEntity::CheckTopCollision(PhysicsEntity* other) {
 	return collider->IsCollidingTop(other->collider);
+}
+
+bool PhysicsEntity::CheckBottomCollision(PhysicsEntity* other) {
+	return collider->IsCollidingBottom(other->collider);
 }
 
 void PhysicsEntity::AddCollider(Vector2 size, Vector2 localPos) {

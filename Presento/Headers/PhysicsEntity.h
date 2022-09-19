@@ -11,7 +11,8 @@ public:
 	virtual ~PhysicsEntity();
 
 	bool CheckCollision(PhysicsEntity* other);
-	bool CheckTopCollison(PhysicsEntity* other);
+	bool CheckTopCollision(PhysicsEntity* other);
+	bool CheckBottomCollision(PhysicsEntity* other);
 
 	virtual void Render();
 

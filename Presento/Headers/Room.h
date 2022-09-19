@@ -24,10 +24,11 @@ private:
 
 	float yvel;
 	const float gravity = 0.7f;
-	const float groundHeight = Graphics::Instance()->winHeight - 96.0f;
+	//const float groundHeight = Graphics::Instance()->winHeight - 110.0f;
 	bool isJumping = false;
 	const float playerSpeed = 0.2f;
-	bool collided = false;
+	bool collidedTop = false;
+	bool collidedBottom = false;
 
 public:
 	Room();

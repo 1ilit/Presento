@@ -40,9 +40,13 @@ void Room::Update(Player* p) {
 		for (int j = 0; j < 16; j++) {
 			if (map[i][j]) {
 				map[i][j]->	Update();
-				if (p->CheckTopCollison(map[i][j])) {
-					collided = true;
+				if (p->CheckTopCollision(map[i][j])) {
+					collidedTop = true;
 					std::cout << "hit head\n";
+				}
+				if (p->CheckBottomCollision(map[i][j])) {
+					collidedBottom = true;
+					std::cout << "fell\n";
 				}
 			}
 		}
@@ -54,28 +58,33 @@ void Room::Update(Player* p) {
 		p->Translate(-VEC2_RIGHT * speed * timer->DeltaTime(), world);
 	}
 
-	if (input->KeyDown(SDL_SCANCODE_W)) {
+	if (input->KeyPressed(SDL_SCANCODE_W)) {
 		if (!isJumping) {
 			isJumping = true;
+			collidedBottom = false;
 			yvel = 15.0f;
 		}
 	}
 
-	if (isJumping)
+	if (isJumping || !collidedBottom)
 	{
 		p->Pos(Vector2(p->Pos().x, p->Pos().y - yvel));
 		yvel -= gravity;
 	}
 
-	if (p->Pos().y >= groundHeight - 32) 
-	{
+	if (collidedBottom) {
 		isJumping = false;
-		p->Pos(Vector2(p->Pos().x, groundHeight - 32));
+		yvel = 0.0f;
+		collidedTop = false;
+		p->Pos(Vector2(p->Pos().x, p->Pos().y));
+		collidedBottom = false;
 	}
 
-	if (collided) {
-		p->Pos(Vector2(p->Pos().x, groundHeight - 32));
-		collided = false;
+	if (collidedTop)
+	{	
+		collidedBottom = false;
+		yvel = -5.0f;
+		//p->Pos(Vector2(p->Pos().x, p->Pos().y - yvel));
 	}
 
 }

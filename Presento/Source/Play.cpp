@@ -1,7 +1,7 @@
 #include "Play.h"
 
 Play::Play() {
-	p = new Player(Vector2(102.0f, Graphics::Instance()->winHeight-96.0f));
+	p = new Player(Vector2(102.0f, Graphics::Instance()->winHeight-200.0f));
 	r = new Room();
 }
 
