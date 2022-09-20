@@ -58,7 +58,7 @@ bool Collider::IsColliding(Collider* other) {
 //bru its true for the side tiles smh
 //add the !IsCollideringLeft or right
 bool Collider::IsCollidingTop(Collider* other) {
-	float topAY = verts[0]->Pos().y;
+	float topAY = verts[0]->Pos().y-14.0f; //da 14 is bc of thesprite change later
 	float topBY = other->verts[0]->Pos().y;
 	float bottomBY = other->verts[2]->Pos().y;
 
@@ -66,11 +66,11 @@ bool Collider::IsCollidingTop(Collider* other) {
 	float leftBX = other->verts[2]->Pos().x;
 	float rightBX = other->verts[3]->Pos().x;
 
-	return topAY == bottomBY && topAY>=topBY && centerAX<=rightBX && centerAX>=leftBX;
+	return topAY <= bottomBY && topAY>=topBY && centerAX<=rightBX && centerAX>=leftBX;
 }
 
 bool Collider::IsCollidingBottom(Collider* other) {
-	float bottomAY = verts[2]->Pos().y;
+	float bottomAY = verts[2]->Pos().y+2;
 	float topBY = other->verts[0]->Pos().y;
 	float bottomBY = other->verts[2]->Pos().y;
 
@@ -80,6 +80,24 @@ bool Collider::IsCollidingBottom(Collider* other) {
 
 	return bottomAY <= bottomBY && bottomAY >= topBY && centerAX <= rightBX && centerAX >= leftBX;
 }
+
+bool Collider::IsCollidingRight(Collider* other) {
+	float leftAX = verts[1]->Pos().x;
+
+	float rightBX = other->verts[1]->Pos().x;
+	float leftBX = other->verts[0]->Pos().x;
+
+	float topBY = other->verts[0]->Pos().y;
+	float bottomBY = other->verts[2]->Pos().y;
+
+	float centerAY = (verts[0]->Pos().y + verts[2]->Pos().y) * 0.5f;
+	return leftAX<=rightBX && leftAX>=leftBX && centerAY>=topBY && centerAY<=bottomBY;
+}
+
+bool Collider::IsCollidingLeft(Collider* other) {
+	return false;
+}
+
 
 void Collider::Render() {
 	if (debug)

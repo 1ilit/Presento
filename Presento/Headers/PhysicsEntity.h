@@ -13,6 +13,8 @@ public:
 	bool CheckCollision(PhysicsEntity* other);
 	bool CheckTopCollision(PhysicsEntity* other);
 	bool CheckBottomCollision(PhysicsEntity* other);
+	bool CheckLeftCollision(PhysicsEntity* other);
+	bool CheckRightCollision(PhysicsEntity* other);
 
 	virtual void Render();
 

@@ -9,6 +9,7 @@ Room::Room() {
 
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 16; j++) {
+			//std::cout << "x: " << currentx << " y: " << currenty << '|';
 			if (m[i][j] == 1) {
 				map[i][j] = new Tile("grass_tile.png", m[i][j]);
 				map[i][j]->Pos(Vector2(currentx, currenty));
@@ -19,6 +20,7 @@ Room::Room() {
 			}
 			currentx += 48;
 		}
+		//std::cout << std::endl;
 		currenty += 48;
 		currentx = 24;
 	}
@@ -39,52 +41,71 @@ void Room::Update(Player* p) {
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 16; j++) {
 			if (map[i][j]) {
-				map[i][j]->	Update();
+				
 				if (p->CheckTopCollision(map[i][j])) {
 					collidedTop = true;
-					std::cout << "hit head\n";
+					//std::cout << "hit head\n";
 				}
 				if (p->CheckBottomCollision(map[i][j])) {
-					collidedBottom = true;
-					std::cout << "fell\n";
+					collidingBottom = true;
+					y = map[i][j]->Pos().y-48;
+					//std::cout << "fell\n";
 				}
+				if(p->CheckRightCollision(map[i][j])) {
+					x = map[i][j]->Pos().x;
+					collidingRight = true;
+					std::cout << "colliding from the right\n";
+				}
+
+				map[i][j]->	Update();
 			}
 		}
 	}
 	if (input->KeyDown(SDL_SCANCODE_D)) {
-		p->Translate(VEC2_RIGHT * speed * timer->DeltaTime(), world);
+		if (collidingRight) {
+			p->Pos(Vector2(x-48, p->Pos().y));
+			collidingRight = false;
+		}
+		else {
+			p->Pos(Vector2(p->Pos().x + 5, p->Pos().y));
+		}//p->Translate(VEC2_RIGHT * speed * timer->DeltaTime(), world);
 	}
 	if (input->KeyDown(SDL_SCANCODE_A)) {
-		p->Translate(-VEC2_RIGHT * speed * timer->DeltaTime(), world);
+		if (collidingLeft) {
+			p->Pos(Vector2(x, p->Pos().y));
+		}
+		else {
+			p->Pos(Vector2(p->Pos().x - 5, p->Pos().y));
+		}
+		//p->Translate(-VEC2_RIGHT * speed * timer->DeltaTime(), world);
 	}
 
 	if (input->KeyPressed(SDL_SCANCODE_W)) {
 		if (!isJumping) {
 			isJumping = true;
-			collidedBottom = false;
+			collidingBottom = false;
 			yvel = 15.0f;
 		}
 	}
 
-	if (isJumping || !collidedBottom)
+	if (isJumping || !collidingBottom)
 	{
 		p->Pos(Vector2(p->Pos().x, p->Pos().y - yvel));
 		yvel -= gravity;
-	}
+	} 
 
-	if (collidedBottom) {
+	if (collidingBottom) {
+		p->Pos(Vector2(p->Pos().x, y));
 		isJumping = false;
-		yvel = 0.0f;
-		collidedTop = false;
-		p->Pos(Vector2(p->Pos().x, p->Pos().y));
-		collidedBottom = false;
+		yvel = 0.0f; 
+		collidingBottom = false;
 	}
 
 	if (collidedTop)
 	{	
-		collidedBottom = false;
-		yvel = -5.0f;
-		//p->Pos(Vector2(p->Pos().x, p->Pos().y - yvel));
+		collidingBottom = false;
+		yvel = -3.5f;
+		collidedTop = false;
 	}
 
 }

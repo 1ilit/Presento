@@ -18,6 +18,8 @@ public:
 	bool IsColliding(Collider* other);
 	bool IsCollidingTop(Collider* other);
 	bool IsCollidingBottom(Collider* other);
+	bool IsCollidingLeft(Collider* other);
+	bool IsCollidingRight(Collider* other);
 
 	void Render();
 };
