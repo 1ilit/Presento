@@ -48,13 +48,18 @@ void Room::Update(Player* p) {
 				}
 				if (p->CheckBottomCollision(map[i][j])) {
 					collidingBottom = true;
-					y = map[i][j]->Pos().y-48;
+					y = map[i][j]->Pos().y-48.0f;
 					//std::cout << "fell\n";
 				}
 				if(p->CheckRightCollision(map[i][j])) {
-					x = map[i][j]->Pos().x;
+					x = map[i][j]->Pos().x-48.0f;
 					collidingRight = true;
-					std::cout << "colliding from the right\n";
+					//std::cout << "colliding from the right\n";
+				}
+				if (p->CheckLeftCollision(map[i][j])) {
+					x = map[i][j]->Pos().x + 48.0f;
+					collidingLeft = true;
+					//std::cout << "colliding from the left\n";
 				}
 
 				map[i][j]->	Update();
@@ -63,19 +68,21 @@ void Room::Update(Player* p) {
 	}
 	if (input->KeyDown(SDL_SCANCODE_D)) {
 		if (collidingRight) {
-			p->Pos(Vector2(x-48, p->Pos().y));
+			p->Pos(Vector2(x, p->Pos().y));
 			collidingRight = false;
 		}
 		else {
-			p->Pos(Vector2(p->Pos().x + 5, p->Pos().y));
-		}//p->Translate(VEC2_RIGHT * speed * timer->DeltaTime(), world);
+			p->Pos(Vector2(p->Pos().x + 4, p->Pos().y));
+		}
 	}
 	if (input->KeyDown(SDL_SCANCODE_A)) {
 		if (collidingLeft) {
 			p->Pos(Vector2(x, p->Pos().y));
+			collidingLeft = false;
 		}
 		else {
-			p->Pos(Vector2(p->Pos().x - 5, p->Pos().y));
+			p->Translate(-VEC2_RIGHT * speed * timer->DeltaTime(), world);
+
 		}
 		//p->Translate(-VEC2_RIGHT * speed * timer->DeltaTime(), world);
 	}

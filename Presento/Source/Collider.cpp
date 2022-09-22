@@ -82,7 +82,7 @@ bool Collider::IsCollidingBottom(Collider* other) {
 }
 
 bool Collider::IsCollidingRight(Collider* other) {
-	float leftAX = verts[1]->Pos().x;
+	float rightAX = verts[1]->Pos().x;
 
 	float rightBX = other->verts[1]->Pos().x;
 	float leftBX = other->verts[0]->Pos().x;
@@ -91,11 +91,21 @@ bool Collider::IsCollidingRight(Collider* other) {
 	float bottomBY = other->verts[2]->Pos().y;
 
 	float centerAY = (verts[0]->Pos().y + verts[2]->Pos().y) * 0.5f;
-	return leftAX<=rightBX && leftAX>=leftBX && centerAY>=topBY && centerAY<=bottomBY;
+	return rightAX<=rightBX && rightAX>=leftBX && centerAY>=topBY && centerAY<=bottomBY;
 }
 
 bool Collider::IsCollidingLeft(Collider* other) {
-	return false;
+	float leftAX = verts[0]->Pos().x;
+
+	float rightBX = other->verts[1]->Pos().x;
+	float leftBX = other->verts[0]->Pos().x;
+
+	float topBY = other->verts[0]->Pos().y;
+	float bottomBY = other->verts[2]->Pos().y;
+
+	float centerAY = (verts[0]->Pos().y + verts[2]->Pos().y) * 0.5f;
+	return leftAX <= rightBX && leftAX >= leftBX && centerAY >= topBY && centerAY <= bottomBY;
+
 }
 
 
