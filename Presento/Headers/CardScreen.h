@@ -6,17 +6,12 @@ class CardScreen : public GameEntity {
 private:
 	InputMgr* input;
 	Timer* timer;
-	Texture* left;
-	Texture* right;
-	Button* lButton;
-	Button* rButton;
+
+	Texture* background;
+	
 	Button* back;
 	Button* achievements;
 	Button* play;
-	Panel* panel[7];
-	float scrollSpeed;
-	int currentPanel;
-	Texture* count;
 
 private:
 	void HandleInput();

@@ -6,45 +6,39 @@ class Room : public GameEntity {
 private:
 	InputMgr* input;
 	Timer* timer;
-	Tile* map[12][16];
-	int m[12][16] = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-		{1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1},
-		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
-	};
-	const float speed = 350.0f;
+	static const int mapHeight = 12;
+	static const int mapWidth = 24;
+	Tile* map[mapHeight][mapWidth];
 
-	float yvel=-15.0f;
+	int m[mapHeight][mapWidth] = {
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+		{1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1},
+		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
+	};
+
+	float screenCenterX = (float)Graphics::Instance()->winWidth*0.5f;
+
+	//for player movement
 	const float gravity = 0.7f;
-	const float groundHeight = Graphics::Instance()->winHeight - 110.0f;
 	bool isJumping = false;
-	const float playerSpeed = 0.2f;
 	bool collidedTop = false;
 	bool collidingBottom = false;
 	bool collidingRight = false;
 	bool collidingLeft = false;
-	bool collided = false;
 	float y;
 	float x;
-
-	//try
-	//float fGravity = 0.35f;
-	//float friction = -0.12f;
-	//Vector2 acceleration = Vector2(0, fGravity);
-	//bool bIsJumping = false;
-	//bool bOnGround = false;
-	Vector2 velocity = VEC2_ZERO;
-
-
+	Vector2 velocity = Vector2(4.0f, -15.0f);
+	Vector2 displacement = VEC2_ZERO;
+	Vector2 previousPos;
 
 public:
 	Room();

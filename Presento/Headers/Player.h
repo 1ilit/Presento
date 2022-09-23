@@ -5,9 +5,12 @@
 
 class Player : public PhysicsEntity {
 private:
+	
 	Texture* tex;
-
+	
 public:
+	GameEntity* tracker; //
+
 	Player(Vector2 startPos);
 	~Player();
 

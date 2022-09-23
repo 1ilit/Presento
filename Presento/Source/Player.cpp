@@ -9,6 +9,8 @@ Player::Player(Vector2 startPos) {
 	tex->Pos(VEC2_ZERO);
 	tex->Scale(Vector2(1.5f, 1.5f));
 
+	tracker = new GameEntity(startPos);
+
 	AddCollider(tex->ScaledDimensions());
 
 }
@@ -26,17 +28,3 @@ void Player::Update() {
 void Player::Render() {
 	tex->Render();
 }
-
-/*
-
-cvsp
-
-themes in odyssey
-
-heroism
-journey
-civilization and primitiveness
-man and the gods
-values in greece
-
-*/
