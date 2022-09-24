@@ -69,7 +69,7 @@ void Room::Update(Player* p) {
 			collidingRight = false;
 		}
 		else {
-			if (p->Pos().x < screenCenterX || p->tracker->Pos().x>=768.0f) {
+			if (p->Pos().x < screenCenterX || scrollOffset>=screenCenterX) {
 				p->Pos(Vector2(p->Pos().x + velocity.x, p->Pos().y));
 			}
 			else {
@@ -81,8 +81,8 @@ void Room::Update(Player* p) {
 						}
 					}
 				}
+				scrollOffset += velocity.x;
 			}
-			p->tracker->Pos(Vector2(p->tracker->Pos().x + velocity.x, p->tracker->Pos().y));
 		}
 	}
 	if (input->KeyDown(SDL_SCANCODE_A)) {
@@ -91,7 +91,7 @@ void Room::Update(Player* p) {
 			collidingLeft = false;
 		}
 		else {
-			if (p->Pos().x > screenCenterX || p->tracker->Pos().x <= screenCenterX) {
+			if (p->Pos().x > screenCenterX || scrollOffset == 0.0f) {
 				p->Pos(Vector2(p->Pos().x - velocity.x, p->Pos().y));
 			}
 			else {
@@ -104,13 +104,12 @@ void Room::Update(Player* p) {
 						}
 					}
 				}
-
+				scrollOffset -= velocity.x;
 			}
-			p->tracker->Pos(Vector2(p->tracker->Pos().x - velocity.x, p->tracker->Pos().y));
 		}
 	}
 
-	if (input->KeyPressed(SDL_SCANCODE_W)) {
+		if (input->KeyPressed(SDL_SCANCODE_W)) {
 			if (!isJumping) {
 				isJumping = true;
 				collidingBottom = false;
@@ -118,27 +117,28 @@ void Room::Update(Player* p) {
 			}
 		}
 
-	if (isJumping || !collidingBottom) {
-		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
-		velocity.y -= gravity;
-	}
+		if (isJumping || !collidingBottom) {
+			p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
+			velocity.y -= gravity;
+		}
 
-	if (collidingBottom) {
+		if (collidingBottom) {
 			p->Pos(Vector2(p->Pos().x, y));
 			isJumping = false;
 			velocity.y = 0.0f;
 			collidingBottom = false;
 		}
 
-	if (collidedTop) {
-		collidedTop = false;
-		collidingBottom = false;
-		velocity.y = -3.5f;
-	}
+		if (collidedTop) {
+			collidedTop = false;
+			collidingBottom = false;
+			velocity.y = -3.5f;
+		}
 
-	//std::cout << "x: " << p->tracker->Pos().x << " y: " << p->tracker->Pos().y << " screenPos: " << mapWidth * 48 - screenCenterX << "\n";
+		//std::cout << "x: " << p->tracker->Pos().x << " y: " << p->tracker->Pos().y << " screenPos: " << mapWidth * 48 - screenCenterX << "\n";
+	
+		std::cout << scrollOffset << "\n";
 }
-
 void Room::Render() {
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {

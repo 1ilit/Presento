@@ -36,7 +36,7 @@ private:
 	bool collidingLeft = false;
 	float y=0.0f;
 	float x=0.0f;
-	//float scrollOffset = 0.0f;
+	float scrollOffset = 0.0f;
 	Vector2 velocity = Vector2(4.0f, -15.0f);
 
 public:
