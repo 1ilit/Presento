@@ -26,7 +26,7 @@ void GameEntity::Pos(Vector2 pos) {
 	mpos = pos;
 }
 
-Vector2 GameEntity::Pos(SPACE space) {
+Vector2 GameEntity::Pos(GameEntity::SPACE space) {
 	if (space == local || parent == NULL) {
 		return mpos;
 	}

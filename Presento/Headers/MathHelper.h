@@ -143,8 +143,8 @@ struct BezierCurve {
 		float uuu = uu * u;
 
 		Vector2 point = (uuu * p0) + (3 * uu * t * p1) + (3 * u * tt * p2) + (ttt * p3);
-		point.x = round(point.x);
-		point.y = round(point.y);
+		point.x = (float)round(point.x);
+		point.y = (float)round(point.y);
 
 		return point;
 	}

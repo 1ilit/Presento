@@ -1,7 +1,7 @@
 #include "Achievements.h"
 
 Achievements::Achievements() {
-	back = new Button("back.png", 64, 32, Graphics::Instance()->winWidth * 0.07f, Graphics::Instance()->winHeight * 0.07f);
+	back = new Button("back.png", 64, 32, (int)Graphics::Instance()->winWidth * 0.07, (int)Graphics::Instance()->winHeight * 0.07);
 }
 
 Achievements::~Achievements() {
