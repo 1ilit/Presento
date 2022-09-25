@@ -28,7 +28,7 @@ TileMap::TileMap(int(&m)[rows][cols], int mapWidth) {
 
 TileMap::~TileMap() {
 	for (int i = 0; i < mapHeight; i++) {
-		for (int j = 0; j < map[0].size(); j++) {
+		for (unsigned int j = 0; j < map[0].size(); j++) {
 			delete map[i][j];
 			map[i][j] = NULL;
 		}
@@ -37,7 +37,7 @@ TileMap::~TileMap() {
 
 void TileMap::TranslateX(float x) {
 	for (int i = 0; i < mapHeight; i++) {
-		for (int j = 0; j < map[0].size(); j++) {
+		for (unsigned int j = 0; j < map[0].size(); j++) {
 			map[i][j]->Pos(Vector2(map[i][j]->Pos().x+x, map[i][j]->Pos().y));
 		}
 	}
@@ -49,7 +49,7 @@ void TileMap::Update() {
 
 void TileMap::Render() {
 	for (int i = 0; i < mapHeight; i++) {
-		for (int j = 0; j < map[0].size(); j++) {
+		for (unsigned int j = 0; j < map[0].size(); j++) {
 			map[i][j]->Render();
 		}
 	}

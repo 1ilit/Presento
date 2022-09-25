@@ -18,6 +18,7 @@ protected:
 	SDL_Rect clippedRect;
 
 public:
+	Texture() {};
 	Texture(std::string filename);
 	Texture(std::string filename, int x, int y, int w, int h);
 	Texture(std::string text, std::string font, int size, SDL_Color color);

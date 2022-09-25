@@ -25,15 +25,15 @@ void Collider::AddVert(int index, Vector2 pos) {
 }
 
 bool Collider::IsColliding(Collider* other) {
-	int leftA = verts[0]->Pos().x;
-	int rightA = verts[1]->Pos().x;
-	int topA = verts[0]->Pos().y;
-	int bottomA = verts[2]->Pos().y;
-
-	int leftB = other->verts[0]->Pos().x;
-	int rightB = other->verts[1]->Pos().x;
-	int topB = other->verts[0]->Pos().y;
-	int bottomB = other->verts[2]->Pos().y;
+	float leftA = verts[0]->Pos().x;
+	float rightA = verts[1]->Pos().x;
+	float topA = verts[0]->Pos().y;
+	float bottomA = verts[2]->Pos().y;
+	
+	float leftB = other->verts[0]->Pos().x;
+	float rightB = other->verts[1]->Pos().x;
+	float topB = other->verts[0]->Pos().y;
+	float bottomB = other->verts[2]->Pos().y;
 
 	if (bottomA <= topB) {
 		return false;
