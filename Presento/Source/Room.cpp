@@ -64,6 +64,7 @@ void Room::Update(Player* p) {
 	}
 
 	if (input->KeyDown(SDL_SCANCODE_D)) {
+		p->SetState(Player::STATE::IDLE_R);
 		if (collidingRight) {
 			p->Pos(Vector2(x, p->Pos().y));
 			collidingRight = false;
@@ -86,6 +87,7 @@ void Room::Update(Player* p) {
 		}
 	}
 	if (input->KeyDown(SDL_SCANCODE_A)) {
+		p->SetState(Player::STATE::IDLE_L);
 		if (collidingLeft) {
 			p->Pos(Vector2(x, p->Pos().y));
 			collidingLeft = false;
