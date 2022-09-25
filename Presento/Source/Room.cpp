@@ -10,7 +10,7 @@ Room::Room() {
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (m[i][j]!=0) {
-				map[i][j] = new Tile("house_sprites.png", m[i][j]);
+				map[i][j] = new Tile("house_tiles.png", m[i][j]);
 				map[i][j]->Pos(Vector2(currentx, currenty));
 			}
 			currentx += 48.0f;
@@ -33,29 +33,29 @@ Room::~Room() {
 }
 
 void Room::Update(Player* p) {
-
+	
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
-			if (map[i][j]->IsColliding()) {
+			if (map[i][j]->HasCollision()) {
 
 				if (p->CheckTopCollision(map[i][j])) {
 					collidedTop = true;
-					std::cout << "top\n";
+					//std::cout << "top\n";
 				}
 				if (p->CheckBottomCollision(map[i][j])) {
 					collidingBottom = true;
 					y = map[i][j]->Pos().y - 48.0f;
-					std::cout << "bot\n";
+					//std::cout << "bot\n";
 				}
 				if (p->CheckRightCollision(map[i][j])) {
 					x = map[i][j]->Pos().x - 48.0f;
 					collidingRight = true;
-					std::cout << "right\n";
+					//std::cout << "right\n";
 				}
 				if (p->CheckLeftCollision(map[i][j])) {
 					x = map[i][j]->Pos().x + 48.0f;
 					collidingLeft = true;
-					std::cout << "left\n";
+					//std::cout << "left\n";
 				}
 
 				map[i][j]->Update();

@@ -11,7 +11,7 @@ public:
 	Tile(std::string fileName, int type);
 	~Tile();
 
-	bool IsColliding();
+	bool HasCollision();
 	void Render();
 	void Update();
 };

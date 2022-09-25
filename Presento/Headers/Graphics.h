@@ -9,7 +9,7 @@
 class Graphics {
 public:
 	static const int winWidth = 768;
-	static const int winHeight = 576;
+	static const int winHeight = 528;
 	const char* winTitle = "Dream Chaser";
 
 private:
