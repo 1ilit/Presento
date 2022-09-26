@@ -64,7 +64,15 @@ void Room::Update(Player* p) {
 	}
 
 	if (input->KeyDown(SDL_SCANCODE_D)) {
-		p->SetState(Player::STATE::IDLE_R);
+		dirRight = true;
+		if (isJumping && p->JumpAnimDone())
+			p->SetState(Player::State::IN_AIR_R);
+		else {
+			if(collidingBottom)
+				p->SetState(Player::State::WALKING_R);
+		}
+			
+		collidingLeft = false;
 		if (collidingRight) {
 			p->Pos(Vector2(x, p->Pos().y));
 			collidingRight = false;
@@ -86,12 +94,27 @@ void Room::Update(Player* p) {
 			}
 		}
 	}
+	else{
+		if(collidingBottom && dirRight)
+			p->SetState(Player::State::IDLE_R);
+	}
+
 	if (input->KeyDown(SDL_SCANCODE_A)) {
-		p->SetState(Player::STATE::IDLE_L);
+		dirRight = false;
+		if (isJumping && p->JumpAnimDone())
+			p->SetState(Player::State::IN_AIR_L);
+		else {
+			if(collidingBottom)
+				p->SetState(Player::State::WALKING_L);
+		}
+			
+		collidingRight = false;
+
 		if (collidingLeft) {
 			p->Pos(Vector2(x, p->Pos().y));
 			collidingLeft = false;
 		}
+
 		else {
 			if (p->Pos().x > screenCenterX || scrollOffset == 0.0f) {
 				p->Pos(Vector2(p->Pos().x - velocity.x, p->Pos().y));
@@ -110,32 +133,43 @@ void Room::Update(Player* p) {
 			}
 		}
 	}
+	else {
+		if (collidingBottom && !dirRight)
+			p->SetState(Player::State::IDLE_L);
+	}
 
 	if (input->KeyPressed(SDL_SCANCODE_W)) {
-			if (!isJumping) {
-				isJumping = true;
-				collidingBottom = false;
-				velocity.y = 15.0f;
-			}
+		if (!isJumping) {
+			isJumping = true;
+			collidingBottom = false;
+			velocity.y = 15.0f;
 		}
+
+		if (isJumping) {
+			if (dirRight)
+				p->SetState(Player::State::JUMPING_R);
+			else
+				p->SetState(Player::State::JUMPING_L);
+		}
+	}
 
 	if (isJumping || !collidingBottom) {
-			p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
-			velocity.y -= gravity;
-		}
+		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
+		velocity.y -= gravity;
+	}
 
 	if (collidingBottom) {
-			p->Pos(Vector2(p->Pos().x, y));
-			isJumping = false;
-			velocity.y = 0.0f;
-			collidingBottom = false;
-		}
+		p->Pos(Vector2(p->Pos().x, y));
+		isJumping = false;
+		velocity.y = 0.0f;
+		collidingBottom = false;
+	}
 
 	if (collidedTop) {
-			collidedTop = false;
-			collidingBottom = false;
-			velocity.y = -3.5f;
-		}
+		collidedTop = false;
+		collidingBottom = false;
+		velocity.y = -3.5f;
+	}
 
 }
 
