@@ -32,30 +32,38 @@ Room::~Room() {
 	}
 }
 
+bool Room::Exited() {
+	return exited;
+}
+
 void Room::Update(Player* p) {
 	
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (map[i][j]->HasCollision()) {
 
-				if (p->CheckTopCollision(map[i][j])) {
+				if (p->CheckTopCollision(map[i][j]) && m[i][j] != 16) {
 					collidedTop = true;
 					//std::cout << "top\n";
 				}
-				if (p->CheckBottomCollision(map[i][j])) {
+				if (p->CheckBottomCollision(map[i][j]) && m[i][j] != 16) {
 					collidingBottom = true;
 					y = map[i][j]->Pos().y - 48.0f;
 					//std::cout << "bot\n";
 				}
-				if (p->CheckRightCollision(map[i][j])) {
+				if (p->CheckRightCollision(map[i][j]) && m[i][j] != 16) {
 					x = map[i][j]->Pos().x - 48.0f;
 					collidingRight = true;
 					//std::cout << "right\n";
 				}
-				if (p->CheckLeftCollision(map[i][j])) {
+				if (p->CheckLeftCollision(map[i][j]) && m[i][j] != 16) {
 					x = map[i][j]->Pos().x + 48.0f;
 					collidingLeft = true;
 					//std::cout << "left\n";
+				}
+				if (p->CheckCollision(map[i][j]) && m[i][j] == 16) {
+					collidingWithDoor = true;
+					//std::cout << collidingWithDoor << '\n';
 				}
 
 				map[i][j]->Update();
@@ -169,6 +177,11 @@ void Room::Update(Player* p) {
 		collidedTop = false;
 		collidingBottom = false;
 		velocity.y = -3.5f;
+	}
+
+	if (collidingWithDoor && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+		exited = true;
+		std::cout << "move screen\n";
 	}
 
 }

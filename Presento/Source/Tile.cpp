@@ -1,19 +1,19 @@
 #pragma once
 #include "Tile.h"
 
-Tile::Tile(std::string fileName, int type) {
+Tile::Tile(std::string fileName, int tile) {
 	
-	if (type >= 1 && type <= 12) {
-		texture = new Texture(fileName, (int)(type - 1) * tileWidth, 0, (int)tileWidth, (int)tileHeight);
+	if (tile >= 1 && tile <= 12) {
+		texture = new Texture(fileName, (int)(tile - 1) * tileWidth, 0, (int)tileWidth, (int)tileHeight);
 		texture->Parent(this);
 	}
-	if(type>=13 && type<=24) {
+	if(tile>=13 && tile<=24) {
 
-		texture = new Texture(fileName, (int)(type - 13) * tileWidth, 48, (int)tileWidth, (int)tileHeight);
+		texture = new Texture(fileName, (int)(tile - 13) * tileWidth, 48, (int)tileWidth, (int)tileHeight);
 		texture->Parent(this);
 	}
 
-	if (type != 8 && type != 9 && type != 12 && type != 13 && !(type<=24 && type>=16))
+	if (tile != 8 && tile != 9 && tile != 12 && tile != 13 && !(tile <=24 && tile >=17))
 		AddCollider(Vector2(tileWidth, tileHeight));
 
 }

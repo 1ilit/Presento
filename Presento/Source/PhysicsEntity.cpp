@@ -31,7 +31,7 @@ bool PhysicsEntity::CheckRightCollision(PhysicsEntity* other) {
 }
 
 void PhysicsEntity::AddCollider(Vector2 size, Vector2 localPos) {
-	collider = new Collider(size);
+	collider = new Collider(size, localPos);
 	collider->Parent(this);
 	collider->Pos(localPos);
 }

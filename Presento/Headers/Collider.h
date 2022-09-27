@@ -12,7 +12,7 @@ private:
 	void AddVert(int index, Vector2 pos);
 
 public:
-	Collider(Vector2 size);
+	Collider(Vector2 size, Vector2 position=VEC2_ZERO);
 	~Collider();
 
 	bool IsColliding(Collider* other);

@@ -172,7 +172,7 @@
     <ClCompile Include="Source\Tile.cpp" />
     <ClCompile Include="Source\TileMap.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\World.cpp" />
+    <ClCompile Include="Source\Outside.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\AnimatedTex.h" />
@@ -196,7 +196,7 @@
     <ClInclude Include="Headers\Tile.h" />
     <ClInclude Include="Headers\TileMap.h" />
     <ClInclude Include="Headers\Timer.h" />
-    <ClInclude Include="Headers\World.h" />
+    <ClInclude Include="Headers\Outside.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

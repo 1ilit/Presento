@@ -1,25 +1,54 @@
 #include "Play.h"
 
 Play::Play() {
-	p = new Player(Vector2(102.0f, Graphics::Instance()->winHeight-300.0f));
-	r = new Room();
+	player = new Player(Vector2(120.0f, Graphics::Instance()->winHeight-300.0f));
+	room = new Room();
+	outside = new Outside();
 }
 
 Play::~Play() {
-	delete p;
-	p = NULL;
+	delete player;
+	player = NULL;
 
-	delete r;
-	r = NULL;
+	delete room;
+	room = NULL;
+
+	delete outside;
+	outside = NULL;
 }
 
 
 void Play::Update() {
-	p->Update();
-	r->Update(p);
+	player->Update();
+
+	switch (currentWorld) {
+	case ROOM:
+		room->Update(player);
+		if (room->Exited()) {
+			player->Pos(Vector2(120.0f, Graphics::Instance()->winHeight - 300.0f));
+			currentWorld = OUTSIDE;
+		}
+		break;
+	case OUTSIDE:
+		outside->Update(player);
+		break;
+	default:
+		break;
+	}
+	
 }
 
 void Play::Render() {
-	r->Render();
-	p->Render();
+	switch (currentWorld) {
+	case ROOM:
+		room->Render();
+		break;
+	case OUTSIDE:
+		outside->Render();
+		break;
+	default:
+		break;
+	}
+
+	player->Render();
 }

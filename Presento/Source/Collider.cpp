@@ -1,6 +1,6 @@
 #include "Collider.h"
 
-Collider::Collider(Vector2 size) {
+Collider::Collider(Vector2 size, Vector2 position) {
 	AddVert(0, Vector2(-0.5f * size.x, -0.5f * size.y));
 	AddVert(1, Vector2(0.5f * size.x, -0.5f * size.y));
 	AddVert(2, Vector2(-0.5f * size.x, 0.5f * size.y));

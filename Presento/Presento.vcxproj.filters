@@ -66,7 +66,7 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\World.cpp">
+    <ClCompile Include="Source\Outside.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Room.cpp">
@@ -134,7 +134,7 @@
     <ClInclude Include="Headers\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\World.h">
+    <ClInclude Include="Headers\Outside.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Room.h">

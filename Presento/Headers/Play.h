@@ -1,13 +1,20 @@
 #pragma once
 #include "GUI.h"
-#include "World.h"
+#include "Outside.h"
 #include "Room.h"
 
 class Play :public GameEntity {
+public:
+	enum World {
+		ROOM,
+		OUTSIDE
+	};
+
 private:
-	Player* p;
-	Room* r;
-	
+	Player* player;
+	Room* room;
+	Outside* outside;
+	World currentWorld = ROOM;
 
 public:
 	Play();
