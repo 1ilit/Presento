@@ -154,6 +154,7 @@
     <ClCompile Include="Source\Achievements.cpp" />
     <ClCompile Include="Source\AnimatedTex.cpp" />
     <ClCompile Include="Source\AssetMgr.cpp" />
+    <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\GameEntity.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Headers\AnimatedTex.h" />
     <ClInclude Include="Headers\AssetMgr.h" />
     <ClInclude Include="Headers\Collider.h" />
+    <ClInclude Include="Headers\Entity.h" />
     <ClInclude Include="Headers\GameEntity.h" />
     <ClInclude Include="Headers\GameManager.h" />
     <ClInclude Include="Headers\Graphics.h" />

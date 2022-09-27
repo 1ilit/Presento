@@ -17,7 +17,6 @@ Play::~Play() {
 	outside = NULL;
 }
 
-
 void Play::Update() {
 	player->Update();
 

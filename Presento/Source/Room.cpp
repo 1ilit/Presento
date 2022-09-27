@@ -8,17 +8,27 @@ Room::Room() {
 	timer = Timer::Instance();
 
 	for (int i = 0; i < mapHeight; i++) {
+
 		for (int j = 0; j < mapWidth; j++) {
-			if (m[i][j]!=0) {
+			if (m[i][j] != 0) {
 				map[i][j] = new Tile("house_tiles.png", m[i][j]);
 				map[i][j]->Pos(Vector2(currentx, currenty));
 			}
 			currentx += 48.0f;
 		}
+
 		currenty += 48.0f;
 		currentx = 24.0f;
 	}
 
+	closet = new Entity("closet.png");
+	closet->Pos(Vector2(400.0f, 370.0f));
+
+	door = new Entity("door.png");
+	door->Pos(Vector2(800.0f, 370.0f));
+
+	closetPanel = new Panel();
+	closetPanel->Parent(this);
 }
 
 Room::~Room() {
@@ -30,6 +40,12 @@ Room::~Room() {
 			}
 		}
 	}
+
+	delete closet;
+	closet = NULL;
+
+	delete closetPanel;
+	closetPanel = NULL;
 }
 
 bool Room::Exited() {
@@ -37,33 +53,28 @@ bool Room::Exited() {
 }
 
 void Room::Update(Player* p) {
-	
+
+	closetPanel->Update();
+	door->Update();
+
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (map[i][j]->HasCollision()) {
 
-				if (p->CheckTopCollision(map[i][j]) && m[i][j] != 16) {
+				if (p->CheckTopCollision(map[i][j])) {
 					collidedTop = true;
-					//std::cout << "top\n";
 				}
-				if (p->CheckBottomCollision(map[i][j]) && m[i][j] != 16) {
+				if (p->CheckBottomCollision(map[i][j])) {
 					collidingBottom = true;
 					y = map[i][j]->Pos().y - 48.0f;
-					//std::cout << "bot\n";
 				}
-				if (p->CheckRightCollision(map[i][j]) && m[i][j] != 16) {
+				if (p->CheckRightCollision(map[i][j])) {
 					x = map[i][j]->Pos().x - 48.0f;
 					collidingRight = true;
-					//std::cout << "right\n";
 				}
-				if (p->CheckLeftCollision(map[i][j]) && m[i][j] != 16) {
+				if (p->CheckLeftCollision(map[i][j])) {
 					x = map[i][j]->Pos().x + 48.0f;
 					collidingLeft = true;
-					//std::cout << "left\n";
-				}
-				if (p->CheckCollision(map[i][j]) && m[i][j] == 16) {
-					collidingWithDoor = true;
-					//std::cout << collidingWithDoor << '\n';
 				}
 
 				map[i][j]->Update();
@@ -98,6 +109,10 @@ void Room::Update(Player* p) {
 						}
 					}
 				}
+
+				door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
+				closet->Pos(Vector2(closet->Pos().x - velocity.x,closet->Pos().y));
+				
 				scrollOffset += velocity.x;
 			}
 		}
@@ -115,9 +130,9 @@ void Room::Update(Player* p) {
 			if(collidingBottom)
 				p->SetState(Player::State::WALKING_L);
 		}
-			
+		
 		collidingRight = false;
-
+		 
 		if (collidingLeft) {
 			p->Pos(Vector2(x, p->Pos().y));
 			collidingLeft = false;
@@ -137,6 +152,10 @@ void Room::Update(Player* p) {
 						}
 					}
 				}
+
+				door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
+				closet->Pos(Vector2(closet->Pos().x + velocity.x, closet->Pos().y));
+				
 				scrollOffset -= velocity.x;
 			}
 		}
@@ -179,10 +198,21 @@ void Room::Update(Player* p) {
 		velocity.y = -3.5f;
 	}
 
-	if (collidingWithDoor && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+	if (p->CheckCollision(door) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		exited = true;
-		std::cout << "move screen\n";
 	}
+
+	if (p->CheckCollision(closet) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+		showClosetPanel = true;
+		std::cout << showClosetPanel<<"\n";
+	}
+
+	if (showClosetPanel && closetPanel->WasClosed()) {
+		showClosetPanel = false;
+		closetPanel->SetClosed();
+	}
+
+	closet->Update();
 
 }
 
@@ -194,4 +224,11 @@ void Room::Render() {
 			}
 		}
 	}
+
+	
+	closet->Render();
+	door->Render();
+
+	if(showClosetPanel)
+		closetPanel->Render();
 }

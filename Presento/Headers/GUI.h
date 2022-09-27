@@ -1,7 +1,7 @@
 #pragma once
-#include <SDL.h>
 #include "AnimatedTex.h"
 #include "InputMgr.h"
+#include "GUI.h"
 
 class Button : public Texture {
 protected:
@@ -48,18 +48,20 @@ public:
 class Panel :public GameEntity {
 private:
 	Texture* panel;
-	//Texture* heading;
-	//Texture* icon;
-	//Button* exit;
+	Texture* background;
+	Button* exit;
+
 	std::map<std::string, Texture*> textures;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, AnimatedTex*> animations;
+	bool wasClosed = false;
 
 public:
-	bool wasClosed = false;
+
+	bool WasClosed();
 	void SetClosed();
 
-	Panel(Vector2 pos);
+	Panel(Vector2 pos=Vector2(Graphics::Instance()->winWidth*0.5f, Graphics::Instance()->winHeight*0.5f));
 	~Panel();
 
 	void AddButton(std::string key, std::string filename, bool b, int posx, int posy, int w, int h);

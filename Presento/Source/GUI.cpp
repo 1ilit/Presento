@@ -120,20 +120,17 @@ void CheckBox::Render() {
 Panel::Panel(Vector2 pos) {
 	Pos(pos);
 
+	background = new Texture("panel_background.png");
+	background->Scale(Vector2(8.0f, 6.0f));
+	background->Parent(this);
+	background->Pos(VEC2_ZERO);
+
 	panel = new Texture("panel.png");
 	panel->Parent(this);
 	panel->Pos(VEC2_ZERO);
 
-	//heading = new Texture(title, "font.ttf", 30, { 70, 70, 70 });
-	//heading->Parent(this);
-	//heading->Pos(Vector2(-150, -135));
-	//
-	//icon = new Texture(iconp);
-	//icon->Parent(this);
-	//icon->Pos(Vector2(-215, -133));
-	//
-	//exit = new Button("exit.png", true, 30, 24, 662, 165);
-	//exit->Parent(this);
+	exit = new Button("exit.png", true, 30, 24, 580, 100);
+	exit->Parent(this);
 
 }
 
@@ -142,14 +139,13 @@ Panel::~Panel() {
 	delete panel;
 	panel = NULL;
 
-	//delete icon;
-	//icon = NULL;
-	//
-	//delete exit;
-	//exit = NULL;
-	//
-	//delete heading;
-	//heading = NULL;
+	delete exit;
+	exit = NULL;
+
+}
+
+bool Panel::WasClosed() {
+	return wasClosed;
 }
 
 void Panel::AddButton(std::string key, std::string filename, bool b, int posx, int posy, int w, int h) {
@@ -169,22 +165,21 @@ void Panel::AddAnimation(std::string key, std::string filename, int x, int y, in
 }
 
 void Panel::Update() {
-	//exit->Update();
-	//if (exit->wasClicked) {
-	//	wasClosed = true;
-	//}
+	exit->Update();
+	if (exit->wasClicked) {
+		wasClosed = true;
+	}
 }
 
 void Panel::SetClosed() {
 	wasClosed = false;
-	//exit->wasClicked = false;
+	exit->wasClicked = false;
 }
 
 void Panel::Render() {
-	//shadow->Render();
+
+	background->Render();
 	panel->Render();
-	//icon->Render();
-	//heading->Render();
-	//exit->Render();
+	exit->Render();
 }
 
