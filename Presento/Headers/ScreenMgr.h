@@ -2,15 +2,13 @@
 
 #include "StartScreen.h"
 #include "CardScreen.h"
-#include "Achievements.h"
-#include "Play.h"
+#include "Room.h"
 
 class ScreenMgr {
 private:
 	enum SCREEN {
 		START,
-		MENU,
-		ACHIEVEMENTS,
+		CARD,
 		PLAY
 	};
 
@@ -18,8 +16,7 @@ private:
 
 	StartScreen* startScreen;
 	CardScreen* cardScreen;
-	Achievements* achScreen;
-	Play* playScreen;
+	Room* room;
 
 	SCREEN currentScreen=SCREEN::START;
 

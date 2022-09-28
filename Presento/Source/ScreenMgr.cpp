@@ -19,9 +19,7 @@ ScreenMgr::ScreenMgr() {
 
 	cardScreen = new CardScreen();
 
-	achScreen = new Achievements();
-
-	playScreen = new Play();
+	room = new Room();
 }
 
 ScreenMgr::~ScreenMgr() {
@@ -31,8 +29,8 @@ ScreenMgr::~ScreenMgr() {
 	delete cardScreen;
 	cardScreen = NULL;
 
-	delete achScreen;
-	achScreen = NULL;
+	delete room;
+	room = NULL;
 
 }
 
@@ -41,35 +39,20 @@ void ScreenMgr::Update() {
 	case START:
 		startScreen->Update();
 		if (startScreen->Started()) {
-			currentScreen = MENU;
+			currentScreen = CARD;
 			startScreen->SetFalse();
 		}
 		break;
 
-	case MENU:
+	case CARD:
 		cardScreen->Update();
-		if (cardScreen->WentBack()) {
-			currentScreen = START;
-			cardScreen->SetClicked(false);
-		}
-		if (cardScreen->WentToAch()) {
-			currentScreen = ACHIEVEMENTS;
-			cardScreen->SetAch(false);
-		}
 		if (cardScreen->GameStarted()) {
 			currentScreen = PLAY;
 			cardScreen->SetFalse();
 		}
 		break;
-	case ACHIEVEMENTS:
-		achScreen->Update();
-		if (achScreen->WentBack()) {
-			currentScreen = MENU;
-			achScreen->SetFalse();
-		}
-		break;
 	case PLAY:
-		playScreen->Update();
+		room->Update();
 		break;
 	}
 
@@ -81,14 +64,11 @@ void ScreenMgr::Render() {
 		startScreen->Render();
 		started = true;
 		break;
-	case MENU:
+	case CARD:
 		cardScreen->Render();
 		break;
-	case ACHIEVEMENTS:
-		achScreen->Render();
-		break;
 	case PLAY:
-		playScreen->Render();
+		room->Render();
 		break;
 	}
 }

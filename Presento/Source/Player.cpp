@@ -187,6 +187,24 @@ Player::~Player() {
 	delete jumpingLBlue;
 	jumpingLBlue = NULL;
 
+	delete jumpingRPink;
+	jumpingRPink = NULL;
+
+	delete jumpingLPink;
+	jumpingLPink = NULL;
+
+	delete jumpingRYellow;
+	jumpingRYellow = NULL;
+
+	delete jumpingLYellow;
+	jumpingLYellow = NULL;
+
+	delete jumpingRPurple;
+	jumpingRPurple = NULL;
+
+	delete jumpingLPurple;
+	jumpingLPurple = NULL;
+
 	//walking
 	delete walkingRBlue;
 	walkingRBlue = NULL;
@@ -194,12 +212,48 @@ Player::~Player() {
 	delete walkingLBlue;
 	walkingLBlue = NULL;
 
+	delete walkingRPink;
+	walkingRPink = NULL;
+
+	delete walkingLPink;
+	walkingLPink = NULL;
+
+	delete walkingRPurple;
+	walkingRPurple = NULL;
+
+	delete walkingLPurple;
+	walkingLPurple = NULL;
+
+	delete walkingRYellow;
+	walkingRYellow = NULL;
+
+	delete walkingLYellow;
+	walkingLYellow = NULL;
+
 	//in air
 	delete inAirRBlue;
 	inAirRBlue = NULL;
 
 	delete inAirLBlue;
 	inAirLBlue = NULL;
+
+	delete inAirRPink;
+	inAirRPink = NULL;
+
+	delete inAirLPink;
+	inAirLPink = NULL;
+
+	delete inAirRPurple;
+	inAirRPurple = NULL;
+
+	delete inAirLPurple;
+	inAirLPurple = NULL;
+
+	delete inAirRYellow;
+	inAirRYellow = NULL;
+
+	delete inAirLYellow;
+	inAirLYellow = NULL;
 }
 
 void Player::SetState(State state) {

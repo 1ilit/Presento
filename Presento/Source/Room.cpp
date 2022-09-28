@@ -7,6 +7,8 @@ Room::Room() {
 	input = InputMgr::Instance();
 	timer = Timer::Instance();
 
+	p = new Player(Vector2(120.0f, Graphics::Instance()->winHeight - 300.0f));
+
 	for (int i = 0; i < mapHeight; i++) {
 
 		for (int j = 0; j < mapWidth; j++) {
@@ -49,6 +51,11 @@ Room::Room() {
 }
 
 Room::~Room() {
+
+	InputMgr::Release();
+
+	Timer::Release();
+
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (map[i][j]) {
@@ -63,6 +70,12 @@ Room::~Room() {
 
 	delete closetPanel;
 	closetPanel = NULL;
+
+	delete door;
+	door = NULL;
+
+	delete p;
+	p = NULL;
 }
 
 bool Room::Exited() {
@@ -73,7 +86,7 @@ bool Room::ScreenDisabled() {
 	return screenDisabled;
 }
 
-void Room::HandleCloset(Player* p) {
+void Room::HandleCloset() {
 	closetPanel->Update();
 
 	if (showClosetPanel) {
@@ -119,9 +132,9 @@ void Room::HandleCloset(Player* p) {
 
 }
 
-void Room::Update(Player* p) {
+void Room::Update() {
 	door->Update();
-
+	p->Update();
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (map[i][j]->HasCollision()) {
@@ -285,7 +298,7 @@ void Room::Update(Player* p) {
 
 	closet->Update();
 
-	HandleCloset(p);
+	HandleCloset();
 
 }
 
@@ -297,7 +310,6 @@ void Room::Render() {
 			}
 		}
 	}
-
 	
 	closet->Render();
 	door->Render();
@@ -321,5 +333,7 @@ void Room::Render() {
 			break;
 		}
 	}
-		
+
+	if(!screenDisabled)
+		p->Render();
 }

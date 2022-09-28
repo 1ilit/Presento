@@ -9,8 +9,8 @@ protected:
 	Texture* hovering;
 	bool highlight = false;
 	InputMgr* input;
-	int x;
-	int y;
+	float x;
+	float y;
 	bool wasClicked = false;
 
 public:

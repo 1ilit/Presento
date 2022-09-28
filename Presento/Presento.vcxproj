@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Achievements.cpp" />
     <ClCompile Include="Source\AnimatedTex.cpp" />
     <ClCompile Include="Source\AssetMgr.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
@@ -164,16 +163,13 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\CardScreen.cpp" />
     <ClCompile Include="Source\PhysicsEntity.cpp" />
-    <ClCompile Include="Source\Play.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Room.cpp" />
     <ClCompile Include="Source\ScreenMgr.cpp" />
     <ClCompile Include="Source\StartScreen.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Tile.cpp" />
-    <ClCompile Include="Source\TileMap.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\Outside.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\AnimatedTex.h" />
@@ -183,22 +179,18 @@
     <ClInclude Include="Headers\GameEntity.h" />
     <ClInclude Include="Headers\GameManager.h" />
     <ClInclude Include="Headers\Graphics.h" />
-    <ClInclude Include="Headers\Achievements.h" />
     <ClInclude Include="Headers\GUI.h" />
     <ClInclude Include="Headers\InputMgr.h" />
     <ClInclude Include="Headers\MathHelper.h" />
     <ClInclude Include="Headers\CardScreen.h" />
     <ClInclude Include="Headers\PhysicsEntity.h" />
-    <ClInclude Include="Headers\Play.h" />
     <ClInclude Include="Headers\Player.h" />
     <ClInclude Include="Headers\Room.h" />
     <ClInclude Include="Headers\ScreenMgr.h" />
     <ClInclude Include="Headers\StartScreen.h" />
     <ClInclude Include="Headers\Texture.h" />
     <ClInclude Include="Headers\Tile.h" />
-    <ClInclude Include="Headers\TileMap.h" />
     <ClInclude Include="Headers\Timer.h" />
-    <ClInclude Include="Headers\Outside.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

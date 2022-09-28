@@ -1,7 +1,6 @@
 #pragma once
 #include "PhysicsEntity.h"
-#include "Texture.h"
-#include "GUI.h"
+#include "AnimatedTex.h"
 
 class Player : public PhysicsEntity {
 public:

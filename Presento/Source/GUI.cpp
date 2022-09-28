@@ -19,8 +19,9 @@ Button::Button(std::string filename, int w, int h, int posx, int posy, bool high
 
 	width = w;
 	height = h;
-	x = posx - w / 2;
-	y = posy - h / 2;
+	x = posx - w*0.5f;
+	y = posy - h*0.5f;
+
 }
 
 Button::~Button() {
@@ -34,8 +35,8 @@ Button::~Button() {
 }
 
 bool Button::Intersect() {
-	if (input->MousePos().x >= x && input->MousePos().x <= x + width &&
-		input->MousePos().y <= y + height && input->MousePos().y >= y) {
+	if (input->MousePos().x >= x-width*0.5f && input->MousePos().x <= x + width*0.5f &&
+		input->MousePos().y >= y && input->MousePos().y <= y + height) {
 
 		return true;
 

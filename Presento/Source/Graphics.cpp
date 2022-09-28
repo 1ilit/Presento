@@ -58,7 +58,7 @@ bool Graphics::Init() {
 		return false;
 	}
 
-	SDL_SetRenderDrawColor(renderer, 63, 34, 124, 255); //63
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //63
 
 	int flag = IMG_INIT_PNG;
 

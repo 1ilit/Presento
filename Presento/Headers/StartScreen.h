@@ -7,7 +7,6 @@
 class StartScreen : public GameEntity {
 private:
 	InputMgr* input;
-	Texture* background;
 	Button* start;
 	Button* info;
 	bool startClicked;

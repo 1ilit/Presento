@@ -7,14 +7,7 @@ private:
 	InputMgr* input;
 	Timer* timer;
 
-	Texture* background;
-	
-	Button* back;
-	Button* achievements;
 	Button* play;
-
-private:
-	void HandleInput();
 
 public:
 	CardScreen();
@@ -22,10 +15,6 @@ public:
 
 	bool GameStarted();
 	void SetFalse();
-	bool WentBack();
-	bool WentToAch();
-	void SetClicked(bool b);
-	void SetAch(bool b);
 
 	void Update();
 	void Render();

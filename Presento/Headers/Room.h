@@ -15,6 +15,7 @@ private:
 	};
 	InputMgr* input;
 	Timer* timer;
+	Player* p;
 
 	//map stuff
 	static const int mapHeight = 11;
@@ -69,7 +70,7 @@ private:
 	bool exited = false;
 
 private:
-	void HandleCloset(Player* p);
+	void HandleCloset();
 
 public:
 	Room();
@@ -77,6 +78,6 @@ public:
 
 	bool ScreenDisabled();
 	bool Exited();
-	void Update(Player* p);
+	void Update();
 	void Render();
 };
