@@ -11,16 +11,17 @@ protected:
 	InputMgr* input;
 	int x;
 	int y;
-
-public:
-	bool isSelected = false;
 	bool wasClicked = false;
 
 public:
-	Button(std::string filename, int w, int h, int posx, int posy);
-	Button(std::string filename, bool highlighted, int w, int h, int posx, int posy);
+	bool isSelected = false;
+
+public:
+	Button(std::string filename, int w, int h, int posx, int posy, bool highlighted = false);
 	~Button();
 
+	bool WasClicked();
+	void SetClicked(bool b);
 	void Update();
 	void Render();
 
@@ -60,6 +61,7 @@ public:
 
 	bool WasClosed();
 	void SetClosed();
+	Vector2 GetSize();
 
 	Panel(Vector2 pos=Vector2(Graphics::Instance()->winWidth*0.5f, Graphics::Instance()->winHeight*0.5f));
 	~Panel();
@@ -67,6 +69,10 @@ public:
 	void AddButton(std::string key, std::string filename, bool b, int posx, int posy, int w, int h);
 	void AddTexture(std::string key, std::string filename, float posx, float posy);
 	void AddAnimation(std::string key, std::string filename, int x, int y, int w, int h, int frameC, float animationSpeed, AnimatedTex::anim_d animationDir, float posx, float posy);
+
+	Texture* GetTextureByKey(std::string key);
+	Button* GetButtonByKey(std::string Key);
+	AnimatedTex* GetAnimationByKey(std::string key);
 
 	void Update();
 	void Render();

@@ -29,6 +29,23 @@ Room::Room() {
 
 	closetPanel = new Panel();
 	closetPanel->Parent(this);
+
+	closetPanel->AddAnimation("buni_blue", "idle_right_blue.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
+	closetPanel->AddAnimation("buni_purple", "idle_right_purple.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
+	closetPanel->AddAnimation("buni_pink", "idle_right_pink.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
+	closetPanel->AddAnimation("buni_yellow", "idle_right_yellow.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
+
+	closetPanel->GetAnimationByKey("buni_blue")->Scale(Vector2(2.0f, 2.0f));
+	closetPanel->GetAnimationByKey("buni_purple")->Scale(Vector2(2.0f, 2.0f));
+	closetPanel->GetAnimationByKey("buni_pink")->Scale(Vector2(2.0f, 2.0f));
+	closetPanel->GetAnimationByKey("buni_yellow")->Scale(Vector2(2.0f, 2.0f));
+
+	closetPanel->AddButton("blue", "player_blue.png", false, screenCenter.x + 62.5f, screenCenter.y - 90, 48, 48);
+	closetPanel->AddButton("pink", "player_pink.png", false, screenCenter.x + 125.0f, screenCenter.y - 90, 48, 48);
+	closetPanel->AddButton("yellow", "player_yellow.png", false, screenCenter.x + 62.5f, screenCenter.y + 90, 48, 48);
+	closetPanel->AddButton("purple", "player_purple.png", false, screenCenter.x + 125.0f, screenCenter.y + 90, 48, 48);
+
+	//std::cout << closetPanel->GetSize().x << " " << closetPanel->GetSize().y;
 }
 
 Room::~Room() {
@@ -52,9 +69,57 @@ bool Room::Exited() {
 	return exited;
 }
 
-void Room::Update(Player* p) {
+bool Room::ScreenDisabled() {
+	return screenDisabled;
+}
 
+void Room::HandleCloset(Player* p) {
 	closetPanel->Update();
+
+	if (showClosetPanel) {
+		closetPanel->Render();
+		switch (currentBuni) {
+		case BLUE:
+			closetPanel->GetAnimationByKey("buni_blue")->Update();
+			break;
+		case PINK:
+			closetPanel->GetAnimationByKey("buni_pink")->Update();
+			break;
+		case YELLOW:
+			closetPanel->GetAnimationByKey("buni_yellow")->Update();
+			break;
+		case PURPLE:
+			closetPanel->GetAnimationByKey("buni_purple")->Update();
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (closetPanel->GetButtonByKey("blue")->WasClicked()) {
+		currentBuni = BLUE;
+		closetPanel->GetButtonByKey("blue")->SetClicked(false);
+		p->SetColor(Player::BuniColor::BLUE);
+	}
+	if (closetPanel->GetButtonByKey("purple")->WasClicked()) {
+		currentBuni = PURPLE;
+		closetPanel->GetButtonByKey("purple")->SetClicked(false);
+		p->SetColor(Player::BuniColor::PURPLE);
+	}
+	if (closetPanel->GetButtonByKey("yellow")->WasClicked()) {
+		currentBuni = YELLOW;
+		closetPanel->GetButtonByKey("yellow")->SetClicked(false);
+		p->SetColor(Player::BuniColor::YELLOW);
+	}
+	if (closetPanel->GetButtonByKey("pink")->WasClicked()) {
+		currentBuni = PINK;
+		closetPanel->GetButtonByKey("pink")->SetClicked(false);
+		p->SetColor(Player::BuniColor::PINK);
+	}
+
+}
+
+void Room::Update(Player* p) {
 	door->Update();
 
 	for (int i = 0; i < mapHeight; i++) {
@@ -83,37 +148,39 @@ void Room::Update(Player* p) {
 	}
 
 	if (input->KeyDown(SDL_SCANCODE_D)) {
-		dirRight = true;
-		if (isJumping && p->JumpAnimDone())
-			p->SetState(Player::State::IN_AIR_R);
-		else {
-			if(collidingBottom)
-				p->SetState(Player::State::WALKING_R);
-		}
-			
-		collidingLeft = false;
-		if (collidingRight) {
-			p->Pos(Vector2(x, p->Pos().y));
-			collidingRight = false;
-		}
-		else {
-			if (p->Pos().x < screenCenterX || scrollOffset>=screenCenterX) {
-				p->Pos(Vector2(p->Pos().x + velocity.x, p->Pos().y));
+		if (!screenDisabled) {
+			dirRight = true;
+			if (isJumping && p->JumpAnimDone())
+				p->SetState(Player::State::IN_AIR_R);
+			else {
+				if (collidingBottom)
+					p->SetState(Player::State::WALKING_R);
+			}
+
+			collidingLeft = false;
+			if (collidingRight) {
+				p->Pos(Vector2(x, p->Pos().y));
+				collidingRight = false;
 			}
 			else {
-				p->Pos(Vector2(screenCenterX, p->Pos().y));
-				for (int i = 0; i < mapHeight; i++) {
-					for (int j = 0; j < mapWidth; j++) {
-						if (map[i][j]) {
-							map[i][j]->Pos(Vector2(map[i][j]->Pos().x - velocity.x, map[i][j]->Pos().y));
+				if (p->Pos().x < screenCenter.x || scrollOffset >= screenCenter.x) {
+					p->Pos(Vector2(p->Pos().x + velocity.x, p->Pos().y));
+				}
+				else {
+					p->Pos(Vector2(screenCenter.x, p->Pos().y));
+					for (int i = 0; i < mapHeight; i++) {
+						for (int j = 0; j < mapWidth; j++) {
+							if (map[i][j]) {
+								map[i][j]->Pos(Vector2(map[i][j]->Pos().x - velocity.x, map[i][j]->Pos().y));
+							}
 						}
 					}
-				}
 
-				door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
-				closet->Pos(Vector2(closet->Pos().x - velocity.x,closet->Pos().y));
-				
-				scrollOffset += velocity.x;
+					door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
+					closet->Pos(Vector2(closet->Pos().x - velocity.x, closet->Pos().y));
+
+					scrollOffset += velocity.x;
+				}
 			}
 		}
 	}
@@ -123,40 +190,42 @@ void Room::Update(Player* p) {
 	}
 
 	if (input->KeyDown(SDL_SCANCODE_A)) {
-		dirRight = false;
-		if (isJumping && p->JumpAnimDone())
-			p->SetState(Player::State::IN_AIR_L);
-		else {
-			if(collidingBottom)
-				p->SetState(Player::State::WALKING_L);
-		}
-		
-		collidingRight = false;
-		 
-		if (collidingLeft) {
-			p->Pos(Vector2(x, p->Pos().y));
-			collidingLeft = false;
-		}
-
-		else {
-			if (p->Pos().x > screenCenterX || scrollOffset == 0.0f) {
-				p->Pos(Vector2(p->Pos().x - velocity.x, p->Pos().y));
-			}
+		if (!screenDisabled) {
+			dirRight = false;
+			if (isJumping && p->JumpAnimDone())
+				p->SetState(Player::State::IN_AIR_L);
 			else {
-				p->Pos(Vector2(screenCenterX, p->Pos().y));
+				if (collidingBottom)
+					p->SetState(Player::State::WALKING_L);
+			}
 
-				for (int i = 0; i < mapHeight; i++) {
-					for (int j = 0; j < mapWidth; j++) {
-						if (map[i][j]) {
-							map[i][j]->Pos(Vector2(map[i][j]->Pos().x + velocity.x, map[i][j]->Pos().y));
+			collidingRight = false;
+
+			if (collidingLeft) {
+				p->Pos(Vector2(x, p->Pos().y));
+				collidingLeft = false;
+			}
+
+			else {
+				if (p->Pos().x > screenCenter.x || scrollOffset == 0.0f) {
+					p->Pos(Vector2(p->Pos().x - velocity.x, p->Pos().y));
+				}
+				else {
+					p->Pos(Vector2(screenCenter.x, p->Pos().y));
+
+					for (int i = 0; i < mapHeight; i++) {
+						for (int j = 0; j < mapWidth; j++) {
+							if (map[i][j]) {
+								map[i][j]->Pos(Vector2(map[i][j]->Pos().x + velocity.x, map[i][j]->Pos().y));
+							}
 						}
 					}
-				}
 
-				door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
-				closet->Pos(Vector2(closet->Pos().x + velocity.x, closet->Pos().y));
-				
-				scrollOffset -= velocity.x;
+					door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
+					closet->Pos(Vector2(closet->Pos().x + velocity.x, closet->Pos().y));
+
+					scrollOffset -= velocity.x;
+				}
 			}
 		}
 	}
@@ -204,15 +273,19 @@ void Room::Update(Player* p) {
 
 	if (p->CheckCollision(closet) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		showClosetPanel = true;
+		screenDisabled = true;
 		std::cout << showClosetPanel<<"\n";
 	}
 
 	if (showClosetPanel && closetPanel->WasClosed()) {
 		showClosetPanel = false;
+		screenDisabled = false;
 		closetPanel->SetClosed();
 	}
 
 	closet->Update();
+
+	HandleCloset(p);
 
 }
 
@@ -229,6 +302,24 @@ void Room::Render() {
 	closet->Render();
 	door->Render();
 
-	if(showClosetPanel)
+	if (showClosetPanel) {
 		closetPanel->Render();
+		switch (currentBuni) {
+		case BLUE:
+			closetPanel->GetAnimationByKey("buni_blue")->Render();
+			break;
+		case PINK:
+			closetPanel->GetAnimationByKey("buni_pink")->Render();
+			break;
+		case YELLOW:
+			closetPanel->GetAnimationByKey("buni_yellow")->Render();
+			break;
+		case PURPLE:
+			closetPanel->GetAnimationByKey("buni_purple")->Render();
+			break;
+		default:
+			break;
+		}
+	}
+		
 }

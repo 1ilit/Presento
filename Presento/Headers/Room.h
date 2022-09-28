@@ -7,8 +7,16 @@
 
 class Room : public GameEntity {
 private:
+	enum ViewBuni {
+		BLUE,
+		PINK,
+		PURPLE,
+		YELLOW
+	};
 	InputMgr* input;
 	Timer* timer;
+
+	//map stuff
 	static const int mapHeight = 11;
 	static const int mapWidth = 24;
 	Tile* map[mapHeight][mapWidth];
@@ -27,7 +35,12 @@ private:
 		{15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
 	};
 
-	float screenCenterX = (float)Graphics::Instance()->winWidth*0.5f;
+	Vector2 screenCenter = Vector2((float)Graphics::Instance()->winWidth*0.5f, (float)Graphics::Instance()->winHeight*0.5f);
+
+	bool screenDisabled = false;
+
+	//closet
+	ViewBuni currentBuni = BLUE;
 
 	//for player movement
 	const float gravity = 0.7f;
@@ -55,10 +68,14 @@ private:
 	bool obtainedKey = false;
 	bool exited = false;
 
+private:
+	void HandleCloset(Player* p);
+
 public:
 	Room();
 	~Room();
 
+	bool ScreenDisabled();
 	bool Exited();
 	void Update(Player* p);
 	void Render();

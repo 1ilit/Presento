@@ -35,11 +35,11 @@ void StartScreen::HandleInput() {
 
 
 bool StartScreen::Started() {
-	return start->wasClicked || input->KeyReleased(SDL_SCANCODE_RETURN);
+	return start->WasClicked() || input->KeyReleased(SDL_SCANCODE_RETURN);
 }
 
 void StartScreen::SetFalse() {
-	start->wasClicked = false;
+	start->SetClicked(false);
 }
 
 void StartScreen::Update() {

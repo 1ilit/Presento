@@ -49,5 +49,6 @@ void Play::Render() {
 		break;
 	}
 
-	player->Render();
+	if(!room->ScreenDisabled())
+		player->Render();
 }

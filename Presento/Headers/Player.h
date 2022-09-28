@@ -16,17 +16,52 @@ public:
 		IN_AIR_L
 	};
 
+	enum BuniColor {
+		BLUE,
+		PINK,
+		PURPLE,
+		YELLOW
+	};
+
 private:
-	AnimatedTex* idleR;
-	AnimatedTex* idleL;
-	AnimatedTex* jumpingR;
-	AnimatedTex* jumpingL;
-	AnimatedTex* walkingR;
-	AnimatedTex* walkingL;
-	AnimatedTex* inAirR;
-	AnimatedTex* inAirL;
+	AnimatedTex* idleRBlue;
+	AnimatedTex* idleLBlue;
+	AnimatedTex* idleRPink;
+	AnimatedTex* idleLPink;
+	AnimatedTex* idleRPurple;
+	AnimatedTex* idleLPurple;
+	AnimatedTex* idleRYellow;
+	AnimatedTex* idleLYellow;
+
+	AnimatedTex* jumpingRBlue;
+	AnimatedTex* jumpingLBlue;
+	AnimatedTex* jumpingRPink;
+	AnimatedTex* jumpingLPink;
+	AnimatedTex* jumpingRPurple;
+	AnimatedTex* jumpingLPurple;
+	AnimatedTex* jumpingRYellow;
+	AnimatedTex* jumpingLYellow;
+
+	AnimatedTex* walkingRBlue;
+	AnimatedTex* walkingLBlue;
+	AnimatedTex* walkingRPink;
+	AnimatedTex* walkingLPink;
+	AnimatedTex* walkingRPurple;
+	AnimatedTex* walkingLPurple;
+	AnimatedTex* walkingRYellow;
+	AnimatedTex* walkingLYellow;
+
+	AnimatedTex* inAirRBlue;
+	AnimatedTex* inAirLBlue;
+	AnimatedTex* inAirRPink;
+	AnimatedTex* inAirLPink;
+	AnimatedTex* inAirRPurple;
+	AnimatedTex* inAirLPurple;
+	AnimatedTex* inAirRYellow;
+	AnimatedTex* inAirLYellow;
 
 	State currentState = IDLE_R;
+	BuniColor currentColor = BLUE;
 	
 public:
 
@@ -34,6 +69,7 @@ public:
 	~Player();
 
 	void SetState(State state);
+	void SetColor(BuniColor color);
 	bool JumpAnimDone();
 	void Update();
 	void Render();

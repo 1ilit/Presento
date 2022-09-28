@@ -10,11 +10,11 @@ Achievements::~Achievements() {
 }
 
 bool Achievements::WentBack() {
-	return back->wasClicked;
+	return back->WasClicked();
 }
 
 void Achievements::SetFalse() {
-	back->wasClicked = false;
+	back->SetClicked(false);
 }
 
 void Achievements::Update() {

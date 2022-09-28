@@ -28,27 +28,27 @@ CardScreen::~CardScreen() {
 }
 
 bool CardScreen::GameStarted() {
-	return play->wasClicked || input->KeyReleased(SDL_SCANCODE_RETURN);
+	return play->WasClicked() || input->KeyReleased(SDL_SCANCODE_RETURN);
 }
 
 void CardScreen::SetFalse() {
-	play->wasClicked = false;
+	play->SetClicked(false);
 }
 
 bool CardScreen::WentBack() {
-	return back->wasClicked;
+	return back->WasClicked();
 }
 
 bool CardScreen::WentToAch() {
-	return achievements->wasClicked;
+	return achievements->WasClicked();
 }
 
 void CardScreen::SetClicked(bool b) {
-	back->wasClicked = b;
+	back->SetClicked(b);
 }
 
 void CardScreen::SetAch(bool b) {
-	achievements->wasClicked = b;
+	achievements->SetClicked(b);
 }
 
 void CardScreen::HandleInput() {
