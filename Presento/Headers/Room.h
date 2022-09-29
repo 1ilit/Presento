@@ -65,6 +65,7 @@ private:
 	//objects
 	Entity* closet;
 	Entity* door;
+	Entity* bed;
 
 	//exiting room
 	bool collidingWithDoor = false;

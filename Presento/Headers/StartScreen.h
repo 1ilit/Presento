@@ -8,11 +8,7 @@ class StartScreen : public GameEntity {
 private:
 	InputMgr* input;
 	Button* start;
-	Button* info;
 	bool startClicked;
-
-private:
-	void HandleInput();
 
 public:
 	StartScreen();

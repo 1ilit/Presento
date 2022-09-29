@@ -23,6 +23,9 @@ Room::Room() {
 		currentx = 24.0f;
 	}
 
+	bed = new Entity("bed.png");
+	bed->Pos(Vector2(120.0f, 395.0f));
+
 	closet = new Entity("closet.png");
 	closet->Pos(Vector2(400.0f, 370.0f));
 
@@ -51,8 +54,6 @@ Room::Room() {
 
 	doorPanel = new SpeechBox();
 	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480);
-
-	//std::cout << closetPanel->GetSize().x << " " << closetPanel->GetSize().y;
 }
 
 Room::~Room() {
@@ -78,6 +79,9 @@ Room::~Room() {
 
 	delete door;
 	door = NULL;
+
+	delete doorPanel;
+	doorPanel = NULL;
 
 	delete p;
 	p = NULL;
@@ -190,6 +194,7 @@ void Room::Update() {
 						}
 					}
 
+					bed->Pos(Vector2(bed->Pos().x - velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
 					closet->Pos(Vector2(closet->Pos().x - velocity.x, closet->Pos().y));
 
@@ -235,6 +240,7 @@ void Room::Update() {
 						}
 					}
 
+					bed->Pos(Vector2(bed->Pos().x + velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
 					closet->Pos(Vector2(closet->Pos().x + velocity.x, closet->Pos().y));
 
@@ -320,6 +326,7 @@ void Room::Render() {
 		}
 	}
 	
+	bed->Render();
 	closet->Render();
 	door->Render();
 
