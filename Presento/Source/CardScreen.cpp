@@ -35,7 +35,7 @@ CardScreen::~CardScreen() {
 }
 
 bool CardScreen::GameStarted() {
-	return play->WasClicked() || input->KeyReleased(SDL_SCANCODE_RETURN);
+	return play->WasClicked() || (tracker >= 3 * delay2 && input->KeyReleased(SDL_SCANCODE_RETURN));
 }
 
 void CardScreen::SetFalse() {

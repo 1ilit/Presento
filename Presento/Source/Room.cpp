@@ -29,6 +29,14 @@ Room::Room() {
 	closet = new Entity("closet.png");
 	closet->Pos(Vector2(400.0f, 370.0f));
 
+	dresser = new Entity("dresser.png");
+	dresser->Pos(Vector2(620.0f, 385.0f));
+
+	dresserPanel = new Panel();
+	dresserPanel->Parent(this);
+	
+	dresserPanel->AddText("dresser_text", "ARCADE_N.TTF", "Pick an item", 14, screenCenter.x - 125.0f, 127);
+
 	door = new Entity("door.png");
 	door->Pos(Vector2(1020.0f, 370.0f));
 
@@ -82,6 +90,9 @@ Room::~Room() {
 
 	delete doorPanel;
 	doorPanel = NULL;
+
+	delete dresser;
+	dresser = NULL;
 
 	delete p;
 	p = NULL;
@@ -137,9 +148,17 @@ void Room::HandleCloset() {
 
 }
 
+void Room::HandleDresserPanel() {
+	dresserPanel->Update();
+}
+
 void Room::Update() {
+
+	closet->Update();
+	dresser->Update();
 	door->Update();
 	p->Update();
+
 	for (int i = 0; i < mapHeight; i++) {
 		for (int j = 0; j < mapWidth; j++) {
 			if (map[i][j]->HasCollision()) {
@@ -194,6 +213,7 @@ void Room::Update() {
 						}
 					}
 
+					dresser->Pos(Vector2(dresser->Pos().x - velocity.x, dresser->Pos().y));
 					bed->Pos(Vector2(bed->Pos().x - velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
 					closet->Pos(Vector2(closet->Pos().x - velocity.x, closet->Pos().y));
@@ -239,7 +259,7 @@ void Room::Update() {
 							}
 						}
 					}
-
+					dresser->Pos(Vector2(dresser->Pos().x + velocity.x, dresser->Pos().y));
 					bed->Pos(Vector2(bed->Pos().x + velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
 					closet->Pos(Vector2(closet->Pos().x + velocity.x, closet->Pos().y));
@@ -287,6 +307,8 @@ void Room::Update() {
 		velocity.y = -3.5f;
 	}
 
+	//door
+
 	if (p->CheckCollision(door) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		if(!showDoorPanel)
 			showDoorPanel = true;
@@ -298,22 +320,45 @@ void Room::Update() {
 			showDoorPanel = false;
 	}
 	
+	//closet
 
 	if (p->CheckCollision(closet) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		showClosetPanel = true;
 		screenDisabled = true;
 		std::cout << showClosetPanel<<"\n";
 	}
+	
 
 	if (showClosetPanel && closetPanel->WasClosed()) {
 		showClosetPanel = false;
 		screenDisabled = false;
 		closetPanel->SetClosed();
-	}
-
-	closet->Update();
-
+	}	
+	
 	HandleCloset();
+
+	//dresser
+
+	if (p->CheckCollision(dresser) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+		if (!showDresserPanel) {
+			showDresserPanel= true;
+			screenDisabled = true;
+		}
+
+
+
+	}if (dresserPanel->WasClosed()) {
+			showDresserPanel = false;
+			screenDisabled = false;
+			dresserPanel->SetClosed();
+		}
+	//if (showDresserPanel && dresserPanel->WasClosed()) {
+	//	showDresserPanel = false;
+	//	screenDisabled = false;
+	//	dresserPanel->SetClosed();
+	//}
+
+	HandleDresserPanel();
 
 }
 
@@ -326,6 +371,7 @@ void Room::Render() {
 		}
 	}
 	
+	dresser->Render();
 	bed->Render();
 	closet->Render();
 	door->Render();
@@ -355,4 +401,7 @@ void Room::Render() {
 
 	if (showDoorPanel)
 		doorPanel->Render();
+
+	if (showDresserPanel)
+		dresserPanel->Render();
 }

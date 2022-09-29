@@ -61,11 +61,14 @@ private:
 	bool showClosetPanel=false;
 	SpeechBox* doorPanel;
 	bool showDoorPanel = false;
+	Panel* dresserPanel;
+	bool showDresserPanel = false;
 
 	//objects
 	Entity* closet;
 	Entity* door;
 	Entity* bed;
+	Entity* dresser;
 
 	//exiting room
 	bool collidingWithDoor = false;
@@ -73,13 +76,13 @@ private:
 
 private:
 	void HandleCloset();
+	void HandleDresserPanel();
 
 public:
 	Room();
 	~Room();
 
 	bool ScreenDisabled();
-	bool Exited();
 	void Update();
 	void Render();
 };
