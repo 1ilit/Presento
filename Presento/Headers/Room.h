@@ -59,6 +59,8 @@ private:
 	//GUI
 	Panel* closetPanel;
 	bool showClosetPanel=false;
+	SpeechBox* doorPanel;
+	bool showDoorPanel = false;
 
 	//objects
 	Entity* closet;
@@ -67,7 +69,6 @@ private:
 	//exiting room
 	bool collidingWithDoor = false;
 	bool obtainedKey = false;
-	bool exited = false;
 
 private:
 	void HandleCloset();

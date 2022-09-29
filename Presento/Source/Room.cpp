@@ -27,10 +27,12 @@ Room::Room() {
 	closet->Pos(Vector2(400.0f, 370.0f));
 
 	door = new Entity("door.png");
-	door->Pos(Vector2(800.0f, 370.0f));
+	door->Pos(Vector2(1020.0f, 370.0f));
 
 	closetPanel = new Panel();
 	closetPanel->Parent(this);
+
+	closetPanel->AddText("closet_text", "ARCADE_N.TTF", "Choose your outfit", 14, screenCenter.x - 85.0f, 127);
 
 	closetPanel->AddAnimation("buni_blue", "idle_right_blue.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
 	closetPanel->AddAnimation("buni_purple", "idle_right_purple.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
@@ -42,10 +44,13 @@ Room::Room() {
 	closetPanel->GetAnimationByKey("buni_pink")->Scale(Vector2(2.0f, 2.0f));
 	closetPanel->GetAnimationByKey("buni_yellow")->Scale(Vector2(2.0f, 2.0f));
 
-	closetPanel->AddButton("blue", "player_blue.png", false, screenCenter.x + 62.5f, screenCenter.y - 90, 48, 48);
-	closetPanel->AddButton("pink", "player_pink.png", false, screenCenter.x + 125.0f, screenCenter.y - 90, 48, 48);
-	closetPanel->AddButton("yellow", "player_yellow.png", false, screenCenter.x + 62.5f, screenCenter.y + 90, 48, 48);
-	closetPanel->AddButton("purple", "player_purple.png", false, screenCenter.x + 125.0f, screenCenter.y + 90, 48, 48);
+	closetPanel->AddButton("blue", "player_blue.png", true, screenCenter.x + 32.5f, screenCenter.y - 50, 72, 72);
+	closetPanel->AddButton("pink", "player_pink.png", true, screenCenter.x + 125.0f, screenCenter.y - 50, 72, 72);
+	closetPanel->AddButton("yellow", "player_yellow.png", true, screenCenter.x + 32.5f, screenCenter.y + 50, 72, 72);
+	closetPanel->AddButton("purple", "player_purple.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
+
+	doorPanel = new SpeechBox();
+	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480);
 
 	//std::cout << closetPanel->GetSize().x << " " << closetPanel->GetSize().y;
 }
@@ -76,10 +81,6 @@ Room::~Room() {
 
 	delete p;
 	p = NULL;
-}
-
-bool Room::Exited() {
-	return exited;
 }
 
 bool Room::ScreenDisabled() {
@@ -281,8 +282,16 @@ void Room::Update() {
 	}
 
 	if (p->CheckCollision(door) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
-		exited = true;
+		if(!showDoorPanel)
+			showDoorPanel = true;
+		else 
+			showDoorPanel = false;
 	}
+	else {
+		if (!p->CheckCollision(door))
+			showDoorPanel = false;
+	}
+	
 
 	if (p->CheckCollision(closet) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		showClosetPanel = true;
@@ -336,4 +345,7 @@ void Room::Render() {
 
 	if(!screenDisabled)
 		p->Render();
+
+	if (showDoorPanel)
+		doorPanel->Render();
 }

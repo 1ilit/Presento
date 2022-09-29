@@ -21,7 +21,6 @@ Button::Button(std::string filename, int w, int h, int posx, int posy, bool high
 	height = h;
 	x = posx - w*0.5f;
 	y = posy - h*0.5f;
-
 }
 
 Button::~Button() {
@@ -35,9 +34,9 @@ Button::~Button() {
 }
 
 bool Button::Intersect() {
-	if (input->MousePos().x >= x-width*0.5f && input->MousePos().x <= x + width*0.5f &&
+	if (input->MousePos().x >= x && input->MousePos().x <= x + width &&
 		input->MousePos().y >= y && input->MousePos().y <= y + height) {
-
+	//std::cout << "here " <<  '\n';
 		return true;
 
 	}
@@ -53,12 +52,11 @@ void Button::SetClicked(bool b) {
 }
 
 void Button::Update() {
-	//std::cout << input->MousePos().x << " " << input->MousePos().y << '\n';
+
 	isSelected = Intersect();
 
 	if (isSelected && input->MouseButtonReleased(InputMgr::left)) {
 		wasClicked = true;
-		std::cout << wasClicked << '\n';
 	}
 }
 
@@ -122,7 +120,7 @@ Panel::Panel(Vector2 pos) {
 	panel->Parent(this);
 	panel->Pos(VEC2_ZERO);	
 
-	exit = new Button("exit.png", 30, 24, 600, 120, true);
+	exit = new Button("exit.png", 30, 24, 587, 124, true);
 	exit->Parent(this);
 
 }
@@ -193,6 +191,12 @@ void Panel::AddTexture(std::string key, std::string filename, float posx, float 
 	textures[key]->Parent(this);
 }
 
+void Panel::AddText(std::string key, std::string font, std::string text, int size, float posx, float posy, SDL_Color color) {
+	textures[key] = new Texture(text, font, size, color);
+	textures[key]->Pos(Vector2(posx, posy));
+	textures[key]->Parent(this);
+}
+
 void Panel::AddAnimation(std::string key, std::string filename, int x, int y, int w, int h, int frameC, float animationSpeed, AnimatedTex::anim_d animationDir, float posx, float posy) {
 	animations[key] = new AnimatedTex(filename, x, y, w, h, frameC, animationSpeed, animationDir);
 	animations[key]->Pos(Vector2(posx, posy));
@@ -250,3 +254,44 @@ void Panel::Render() {
 	exit->Render();
 }
 
+
+SpeechBox::SpeechBox(Vector2 pos) {
+	Pos(pos);
+
+	panel = new Texture("bottom_panel.png");
+	panel->Parent(this);
+	panel->Pos(VEC2_ZERO);
+
+}
+
+SpeechBox::~SpeechBox() {
+	delete panel;
+	panel = NULL;
+}
+
+void SpeechBox::Update() {
+	panel->Update();
+	for (auto p : textures) {
+		if (p.second != NULL)
+			p.second->Update();
+	}
+
+	for (auto p : buttons) {
+		if (p.second != NULL)
+			p.second->Update();
+	}
+}
+
+void SpeechBox::Render() {
+	panel->Render();
+
+	for (auto p : textures) {
+		if (p.second != NULL)
+			p.second->Render();
+	}
+
+	for (auto p : buttons) {
+		if (p.second != NULL)
+			p.second->Render();
+	}
+}

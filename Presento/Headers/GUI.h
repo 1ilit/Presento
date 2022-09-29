@@ -50,12 +50,13 @@ class Panel :public GameEntity {
 private:
 	Texture* panel;
 	Texture* background;
-	Button* exit;
+	Button* exit;	
+	bool wasClosed = false;
 
+protected:
 	std::map<std::string, Texture*> textures;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, AnimatedTex*> animations;
-	bool wasClosed = false;
 
 public:
 
@@ -68,6 +69,7 @@ public:
 
 	void AddButton(std::string key, std::string filename, bool b, int posx, int posy, int w, int h);
 	void AddTexture(std::string key, std::string filename, float posx, float posy);
+	void AddText(std::string key, std::string font, std::string text, int size, float posx, float posy, SDL_Color color = { 83,126,57,255 });
 	void AddAnimation(std::string key, std::string filename, int x, int y, int w, int h, int frameC, float animationSpeed, AnimatedTex::anim_d animationDir, float posx, float posy);
 
 	Texture* GetTextureByKey(std::string key);
@@ -76,4 +78,17 @@ public:
 
 	void Update();
 	void Render();
+};
+
+class SpeechBox : public Panel{
+private:
+	Texture* panel;
+
+public:
+	SpeechBox(Vector2 pos = Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight-48.0f));
+	~SpeechBox();
+
+	void Update();
+	void Render();
+
 };
