@@ -9,8 +9,8 @@
 class Graphics {
 public:
 	static const int winWidth = 768;
-	static const int winHeight = 528;
-	const char* winTitle = "Dream Chaser";
+	static const int winHeight = 480;
+	const char* winTitle = "Presento";
 
 private:
 	static Graphics* instance;

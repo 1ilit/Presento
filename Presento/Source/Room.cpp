@@ -25,30 +25,47 @@ Room::Room() {
 	inv = new Inventory();
 
 	ladder = new Entity("ladder.png");
-	ladder->Pos(Vector2(p->Pos().x, 300.0f));
+	ladder->Pos(Vector2(p->Pos().x, 252.0f));
 
 	chest = new Entity("chest.png");
-	chest->Pos(Vector2(820.0f, 407.0f));
+	chest->Pos(Vector2(890.0f, 359.0f));
 
 	shelf = new Entity("shelf.png");
-	shelf->Pos(Vector2(250.0f, 170.0f));
+	shelf->Pos(Vector2(250.0f, 120.0f));
 
 	shelf2 = new Entity("shelf2.png");
-	shelf2->Pos(Vector2(750.0f, 270.0f));
+	shelf2->Pos(Vector2(770.0f, 207.0f));
 
 	bed = new Entity("bed.png");
-	bed->Pos(Vector2(120.0f, 395.0f));
+	bed->Pos(Vector2(120.0f, 349.0f));
 
 	closet = new Entity("closet.png");
-	closet->Pos(Vector2(400.0f, 370.0f));
+	closet->Pos(Vector2(400.0f, 322.0f));
+
+	pic1 = new Entity("picture1.png");
+	pic1->Pos(Vector2(580.0f, 212.0f));
+
+	pic2 = new Entity("picture2.png");
+	pic2->Pos(Vector2(660.0f, 237.0f));
+
+	pic3 = new Entity("picture3.png");
+	pic3->Pos(Vector2(140.0f, 250.0f));
 
 	dresser = new Entity("dresser.png");
-	dresser->Pos(Vector2(620.0f, 385.0f));
+	dresser->Pos(Vector2(620.0f, 337.0f));
+
+	cat = new AnimEntity("cat.png", 0, 0, 72, 64, 4, 1.5f, AnimatedTex::anim_d::horizontal, AnimatedTex::wrap_mode::loop);
+	cat->Pos(Vector2(770.0f, 365.0f));
+	cat->Scale(Vector2(0.70f, 0.70f));
+
+	eating = new AnimEntity("cat_eating.png", 0, 0, 72, 96, 4, 1.2f, AnimatedTex::anim_d::horizontal, AnimatedTex::wrap_mode::once);
+	eating->Pos(Vector2(771.0f, 352.0f));
+	eating->Scale(Vector2(0.70f, 0.70f));
 
 	dresserPanel = new Panel();
 	dresserPanel->Parent(this);
 	
-	dresserPanel->AddText("dresser_text", "ARCADE_N.TTF", "Pick an item", 14, screenCenter.x - 125.0f, 127);
+	dresserPanel->AddText("dresser_text", "ARCADE_N.TTF", "Pick an item", 14, screenCenter.x - 125.0f, 108);
 
 	dresserPanel->AddButton("apple_btn", "apple_btn.png", true, screenCenter.x - 125.5f, screenCenter.y - 50, 72, 72);
 	dresserPanel->AddButton("book_btn", "book_btn.png", true, screenCenter.x, screenCenter.y - 50, 72, 72);
@@ -58,12 +75,12 @@ Room::Room() {
 	dresserPanel->AddButton("pencil_btn", "pencil_btn.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
 
 	door = new Entity("door.png");
-	door->Pos(Vector2(1020.0f, 370.0f));
+	door->Pos(Vector2(1020.0f, 322.0f));
 
 	closetPanel = new Panel();
 	closetPanel->Parent(this);
 
-	closetPanel->AddText("closet_text", "ARCADE_N.TTF", "Choose your outfit", 14, screenCenter.x - 85.0f, 127);
+	closetPanel->AddText("closet_text", "ARCADE_N.TTF", "Choose your outfit", 14, screenCenter.x - 85.0f, 108);
 
 	closetPanel->AddAnimation("buni_blue", "idle_right_blue.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
 	closetPanel->AddAnimation("buni_purple", "idle_right_purple.png", 0, 0, 48, 48, 4, 0.7f, AnimatedTex::anim_d::horizontal, screenCenter.x - 125.0f, screenCenter.y);
@@ -80,11 +97,33 @@ Room::Room() {
 	closetPanel->AddButton("yellow", "player_yellow.png", true, screenCenter.x + 32.5f, screenCenter.y + 50, 72, 72);
 	closetPanel->AddButton("purple", "player_purple.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
 
-	doorPanel = new SpeechBox();
-	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480);
+	doorPanel = new SpeechBox(Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight - 48.0f),true);
+	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480-48);
 
-	noKeyPanel = new SpeechBox();
-	noKeyPanel->AddText("no_key_text", "ARCADE_N.TTF", "Key needed to open", 16, 260, 480);
+	noKeyPanel = new SpeechBox(Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight - 48.0f),true);
+	noKeyPanel->AddText("no_key_text", "ARCADE_N.TTF", "Key needed to open", 16, 260, 480-48);
+
+	keyAcquired = new PopUp();
+	keyAcquired->AddTexture("key", "key.png", 560, 64);
+	keyAcquired->AddText("got_key", "ARCADE_N.TTF", "Found key", 12, 650, 60);
+
+	openChest = new SpeechBox(Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight - 48.0f),true);
+	openChest->AddText("open_text", "ARCADE_N.TTF", "Use key? (Y/N)", 16, 235, 480 - 48);
+
+	catPart = new SpeechBox(Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight - 48.0f),false);
+	catPart->AddText("open_text", "ARCADE_N.TTF", "Nya, lookin for a key? (->)", 16, 335, 480 - 48);
+	catPart->AddText("feed_text", "ARCADE_N.TTF", "Feed me and i'll tell you, nya", 16, 360, 480 - 48);
+
+	catAnswer = new SpeechBox(Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight - 48.0f), true);
+	catAnswer->AddText("answer_text", "ARCADE_N.TTF", "Mmm, ok. Check the shelves.", 16, 345, 480 - 48);
+
+	finalPanel = new Panel();
+	finalPanel->Parent(this);
+
+	finalPanel->AddTexture("giraffe", "giraffe.png", screenCenter.x, screenCenter.y);
+	finalPanel->GetTextureByKey("giraffe")->Scale(Vector2(2.0f, 2.0f));
+	finalPanel->AddText("hehe", "ARCADE_N.TTF", "Never said it would be real hehe", 12, screenCenter.x, screenCenter.y+120.0f);
+	finalPanel->AddText("hbd", "ARCADE_N.TTF", "Happy Birthday!", 12, screenCenter.x, screenCenter.y - 120.0f);
 }
 
 Room::~Room() {
@@ -102,6 +141,9 @@ Room::~Room() {
 		}
 	}
 
+	delete keyAcquired;
+	keyAcquired = NULL;
+
 	delete closet;
 	closet = NULL;
 
@@ -111,17 +153,32 @@ Room::~Room() {
 	delete door;
 	door = NULL;
 
+	delete finalPanel;
+	finalPanel = NULL;
+
 	delete doorPanel;
 	doorPanel = NULL;
 
 	delete dresser;
 	dresser = NULL;
 
+	delete pic1;
+	pic1 = NULL;
+
+	delete pic2;
+	pic2 = NULL;
+
+	delete pic3;
+	pic3 = NULL;
+
 	delete dresserPanel;
 	dresserPanel = NULL;
 
 	delete p;
 	p = NULL;
+
+	delete cat;
+	cat = NULL;
 
 	delete chest;
 	chest = NULL;
@@ -140,6 +197,12 @@ Room::~Room() {
 
 	delete ladder;
 	ladder = NULL;
+
+	delete catPart;
+	catPart = NULL;
+
+	delete catAnswer;
+	catAnswer = NULL;
 }
 
 bool Room::ScreenDisabled() {
@@ -222,15 +285,6 @@ void Room::HandleDresser() {
 	}
 }
 
-void Room::HandleClimbing() {
-	if (isClimbing) {
-		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
-	}
-	if (p->Pos().y + 24.0f >= ladder->Pos().y - 130.0f) {
-		isClimbing = false;
-	}
-}
-
 void Room::HandleChest() {
 	if (p->CheckCollision(chest) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		if (!obtainedKey) {
@@ -238,17 +292,73 @@ void Room::HandleChest() {
 		}
 		else {
 			showNoKeyPanel = false;
-			openChest = true;
+			showOpenChest = true;
+			openChest->Update();
 		}
 	}
 	else {
 		if (!p->CheckCollision(chest))
 			showNoKeyPanel = false;
 	}
+
+	if (showOpenChest) {
+		if (input->KeyReleased(SDL_SCANCODE_Y)) {
+			showOpenChest = false;
+			showFinalPanel = true;
+		}
+		else if (input->KeyReleased(SDL_SCANCODE_N)) {
+			showOpenChest = false;
+		}
+	}
+
+	if (showFinalPanel) {
+		finalPanel->Update();
+	}
+
+	if (showFinalPanel && finalPanel->WasClosed()) {
+		showFinalPanel = false;
+		finalPanel->SetClosed();
+	}
+}
+
+void Room::HandleCat() {
+	if (p->CheckCollision(cat) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+		if (!isEating && inv->GetCurrentItem() == Inventory::Item::FISH) {
+			isEating = true;
+		}
+		else {
+			showCatPart = true;
+			catPart->Update();
+			part==1? catPart->GetTextureByKey("open_text")->Update() : catPart->GetTextureByKey("feed_text")->Update();
+		}
+		
+	}
+	else {
+		if (!p->CheckCollision(cat))
+			showCatPart = false;
+	}
+
+	if (showCatPart && part==1) {
+		if (input->KeyReleased(SDL_SCANCODE_RIGHT)) {
+			part = 2;
+		}
+	}
+
+	if (isEating && eating->AnimDone()) {
+		isEating = false;
+		showAnswer = true;
+	}
+
+	if (!p->CheckCollision(cat))
+		showAnswer = false;
+
 }
 
 void Room::Update() {
+	if(isEating)
+		eating->Update();
 
+	cat->Update();
 	inv->Update();
 	chest->Update();
 	closet->Update();
@@ -279,6 +389,10 @@ void Room::Update() {
 				map[i][j]->Update();
 			}
 		}
+	}
+
+	if (p->CheckTopCollision(shelf2)) {
+		collidedTop = true;
 	}
 
 	if (input->KeyDown(SDL_SCANCODE_D)) {
@@ -314,6 +428,11 @@ void Room::Update() {
 						ladder->Pos(Vector2(ladder->Pos().x - velocity.x, ladder->Pos().y));
 					}
 
+					eating->Pos(Vector2(eating->Pos().x - velocity.x, eating->Pos().y));
+					cat->Pos(Vector2(cat->Pos().x - velocity.x, cat->Pos().y));
+					pic1->Pos(Vector2(pic1->Pos().x - velocity.x, pic1->Pos().y));
+					pic2->Pos(Vector2(pic2->Pos().x - velocity.x, pic2->Pos().y));
+					pic3->Pos(Vector2(pic3->Pos().x - velocity.x, pic3->Pos().y));
 					shelf2->Pos(Vector2(shelf2->Pos().x - velocity.x, shelf2->Pos().y));
 					shelf->Pos(Vector2(shelf->Pos().x - velocity.x, shelf->Pos().y));
 					chest->Pos(Vector2(chest->Pos().x - velocity.x, chest->Pos().y));
@@ -326,6 +445,7 @@ void Room::Update() {
 				}
 				if (isClimbing) {
 					isJumping = true;
+					isClimbing = false;
 				}
 			}
 		}
@@ -371,6 +491,11 @@ void Room::Update() {
 						ladder->Pos(Vector2(ladder->Pos().x + velocity.x, ladder->Pos().y));
 					}
 
+					eating->Pos(Vector2(eating->Pos().x + velocity.x, eating->Pos().y));
+					cat->Pos(Vector2(cat->Pos().x + velocity.x, cat->Pos().y));
+					pic2->Pos(Vector2(pic2->Pos().x + velocity.x, pic2->Pos().y));
+					pic1->Pos(Vector2(pic1->Pos().x + velocity.x, pic1->Pos().y));
+					pic3->Pos(Vector2(pic3->Pos().x + velocity.x, pic3->Pos().y));
 					shelf2->Pos(Vector2(shelf2->Pos().x + velocity.x, shelf2->Pos().y));
 					shelf->Pos(Vector2(shelf->Pos().x + velocity.x, shelf->Pos().y));
 					chest->Pos(Vector2(chest->Pos().x + velocity.x, chest->Pos().y));
@@ -383,6 +508,7 @@ void Room::Update() {
 				}
 				if (isClimbing) {
 					isJumping = true;
+					isClimbing = false;
 				}
 			}
 		}
@@ -398,13 +524,25 @@ void Room::Update() {
 		ladder->Pos(Vector2(p->Pos().x, ladder->Pos().y));
 
 	//place the ladder
-	if (input->KeyPressed(SDL_SCANCODE_P) && !showLadder) {
+	if (input->KeyPressed(SDL_SCANCODE_P) && !showLadder && inv->GetCurrentItem()==Inventory::Item::LADDER) {
 		showLadder = true;
 	}
+
+	if (p->CheckCollision(shelf)) {
+		obtainedKey = true;
+	}
+
+	if (obtainedKey) {
+		tracker += timer->DeltaTime();
+		if (tracker < delay)
+			keyAcquired->Update();
+	}
+		
 
 	//pick the ladder up
 	if (input->KeyPressed(SDL_SCANCODE_O) && showLadder && p->CheckCollision(ladder)) {
 		showLadder = false;
+		isJumping = true;
 	}
 
 	if (input->KeyPressed(SDL_SCANCODE_W)) {
@@ -429,8 +567,7 @@ void Room::Update() {
 	if (input->KeyDown(SDL_SCANCODE_W)) {
 		if (showLadder && p->CheckCollision(ladder)) {
 			isClimbing = true;
-			if(p->Pos().y+24.0f<=ladder->Pos().y-30.0f)
-				p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
+			p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
 			collidingBottom = false;
 		}
 	}
@@ -440,8 +577,6 @@ void Room::Update() {
 			p->Pos(Vector2(p->Pos().x, p->Pos().y + velocity.x));
 		}
 	}
-
-
 
 	if (isJumping || !collidingBottom && (!isClimbing && p->CheckCollision(ladder))) {
 		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
@@ -510,7 +645,8 @@ void Room::Update() {
 	//chest
 	HandleChest();
 
-
+	//ket
+	HandleCat();
 }
 
 void Room::Render() {
@@ -522,6 +658,9 @@ void Room::Render() {
 		}
 	}
 	
+	pic1->Render();
+	pic2->Render();
+	pic3->Render();
 	shelf2->Render();
 	shelf ->Render();
 	inv->Render();
@@ -530,6 +669,10 @@ void Room::Render() {
 	bed->Render();
 	closet->Render();
 	door->Render();
+	if(isEating)
+		eating->Render();
+	if(!isEating)
+		cat->Render();
 
 	if(showLadder)
 		ladder->Render();
@@ -565,4 +708,24 @@ void Room::Render() {
 
 	if (showNoKeyPanel)
 		noKeyPanel->Render();
+
+	if (obtainedKey) {
+		if (tracker < delay)
+			keyAcquired->Render();
+	}
+
+	if (showOpenChest) {
+		openChest->Render();
+	}
+	
+	if (showCatPart) {
+		catPart->Render();
+		part == 1 ? catPart->GetTextureByKey("open_text")->Render() : catPart->GetTextureByKey("feed_text")->Render();
+	}
+	if (showAnswer)
+		catAnswer->Render();
+	
+	if (showFinalPanel)
+		finalPanel->Render();
+
 }

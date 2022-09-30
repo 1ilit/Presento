@@ -20,13 +20,12 @@ private:
 	Player* p;
 
 	//map stuff
-	static const int mapHeight = 11;
+	static const int mapHeight = 10;
 	static const int mapWidth = 24;
 	Tile* map[mapHeight][mapWidth];
 
 	int m[mapHeight][mapWidth] = {
 		{1,2,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,3,4,5,6 },
-		{7,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,10},
 		{7,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,10},
 		{7,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,10},
 		{7,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,10},
@@ -70,6 +69,18 @@ private:
 	bool showNoKeyPanel = false;
 	Panel* dresserPanel;
 	bool showDresserPanel = false;
+	PopUp* keyAcquired;
+	float delay = 3.0f;
+	float tracker = 0.0f;
+	SpeechBox* openChest;
+	bool showOpenChest=false;
+	SpeechBox* catPart;
+	bool showCatPart = false;
+	int part = 1;
+	SpeechBox* catAnswer;
+	bool showAnswer=false;
+	Panel* finalPanel;
+	bool showFinalPanel;
 
 	//objects
 	Entity* closet;
@@ -80,17 +91,23 @@ private:
 	Entity* shelf;
 	Entity* shelf2;
 	Entity* ladder;
+	Entity* pic1;
+	Entity* pic2;
+	Entity* pic3;
+	AnimEntity* cat;
+	AnimEntity* eating;
+	bool isEating = false;
 
 	bool collidingWithDoor = false;
 	bool obtainedKey = false;
-	bool openChest = false;
 	bool showLadder = false;
 
 private:
 	void HandleCloset();
 	void HandleDresser();
 	void HandleChest();
-	void HandleClimbing();
+	void HandleCat();
+	void FeedCat();
 
 public:
 	Room();

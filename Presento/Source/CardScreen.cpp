@@ -6,19 +6,19 @@ CardScreen::CardScreen() {
 	timer = Timer::Instance();
 
 	part1 = new Texture("Happy Birthday, Buni!", "ARCADE_N.TTF", 18, {255, 255, 255, 255});
-	part1->Pos(Vector2(Graphics::Instance()->winWidth*0.5f, 200.0f));
+	part1->Pos(Vector2(Graphics::Instance()->winWidth*0.5f, 150.0f));
 	part1->Parent(this);
 
 	part2 = new Texture("I left a little gift in your room.", "ARCADE_N.TTF", 18, { 255, 255, 255, 255 });
-	part2->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 250.0f));
+	part2->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 200.0f));
 	part2->Parent(this);
 
 	part3 = new Texture("Hope you'll like it.", "ARCADE_N.TTF", 18, { 255, 255, 255, 255 });
-	part3->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 300.0f));
+	part3->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 250.0f));
 	part3->Parent(this);
 
 	part4 = new Texture("- Ubi <3", "ARCADE_N.TTF", 18, { 255, 255, 255, 255 });
-	part4->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 350.0f));
+	part4->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 300.0f));
 	part4->Parent(this);
 
 	play = new Button("start_btn.png", 220, 72, Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight * 0.9f);

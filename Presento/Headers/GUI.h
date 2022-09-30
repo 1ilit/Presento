@@ -85,10 +85,24 @@ public:
 class SpeechBox : public Panel{
 private:
 	Texture* panel;
+	bool renderAll = true;
 
 public:
-	SpeechBox(Vector2 pos = Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight-48.0f));
+	SpeechBox(Vector2 pos = Vector2(Graphics::Instance()->winWidth * 0.5f, Graphics::Instance()->winHeight-48.0f), bool allRender=true);
 	~SpeechBox();
+
+	void Update();
+	void Render();
+
+};
+
+class PopUp : public Panel {
+private:
+	Texture* panel;
+
+public:
+	PopUp(Vector2 pos = Vector2((float)Graphics::Instance()->winWidth-135.0f, 60.0f));
+	~PopUp();
 
 	void Update();
 	void Render();

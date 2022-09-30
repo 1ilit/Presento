@@ -120,7 +120,7 @@ Panel::Panel(Vector2 pos) {
 	panel->Parent(this);
 	panel->Pos(VEC2_ZERO);	
 
-	exit = new Button("exit.png", 30, 24, 587, 124, true);
+	exit = new Button("exit.png", 30, 24, 587, 104, true);
 	exit->Parent(this);
 
 }
@@ -263,12 +263,14 @@ void Panel::Render() {
 }
 
 
-SpeechBox::SpeechBox(Vector2 pos) {
+SpeechBox::SpeechBox(Vector2 pos, bool allRender) {
 	Pos(pos);
 
 	panel = new Texture("bottom_panel.png");
 	panel->Parent(this);
 	panel->Pos(VEC2_ZERO);
+
+	renderAll = allRender;
 
 }
 
@@ -293,12 +295,47 @@ void SpeechBox::Update() {
 void SpeechBox::Render() {
 	panel->Render();
 
-	for (auto p : textures) {
+	if(renderAll)
+		for (auto p : textures) {
+			if (p.second != NULL)
+				p.second->Render();
+		}
+
+	for (auto p : buttons) {
 		if (p.second != NULL)
 			p.second->Render();
 	}
+}
 
-	for (auto p : buttons) {
+PopUp::PopUp(Vector2 pos) {
+
+	Pos(pos);
+
+	panel=new Texture("pop_up_panel.png");
+	panel->Parent(this);
+	panel->Pos(VEC2_ZERO);
+}
+
+PopUp::~PopUp() {
+
+	delete panel;
+	panel = NULL;
+
+	for (auto p : textures) {
+		if (p.second != NULL)
+			p.second->Update();
+	}
+
+}
+
+void PopUp::Update() {
+
+}
+
+void PopUp::Render() {
+	panel->Render();
+
+	for (auto p : textures) {
 		if (p.second != NULL)
 			p.second->Render();
 	}
