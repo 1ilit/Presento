@@ -23,6 +23,14 @@ Room::Room() {
 		currentx = 24.0f;
 	}
 
+	inv = new Inventory();
+
+	chest = new Entity("chest.png");
+	chest->Pos(Vector2(820.0f, 407.0f));
+
+	shelf = new Entity("shelf.png");
+	shelf->Pos(Vector2(250.0f, 170.0f));
+
 	bed = new Entity("bed.png");
 	bed->Pos(Vector2(120.0f, 395.0f));
 
@@ -36,6 +44,13 @@ Room::Room() {
 	dresserPanel->Parent(this);
 	
 	dresserPanel->AddText("dresser_text", "ARCADE_N.TTF", "Pick an item", 14, screenCenter.x - 125.0f, 127);
+
+	dresserPanel->AddButton("apple_btn", "apple_btn.png", true, screenCenter.x - 125.5f, screenCenter.y - 50, 72, 72);
+	dresserPanel->AddButton("book_btn", "book_btn.png", true, screenCenter.x, screenCenter.y - 50, 72, 72);
+	dresserPanel->AddButton("fish_btn", "fish_btn.png", true, screenCenter.x +125.0f, screenCenter.y - 50, 72, 72);
+	dresserPanel->AddButton("hat_btn", "hat_btn.png", true, screenCenter.x - 125.5f, screenCenter.y + 50, 72, 72);
+	dresserPanel->AddButton("ladder_btn", "ladder_btn.png", true, screenCenter.x, screenCenter.y + 50, 72, 72);
+	dresserPanel->AddButton("pencil_btn", "pencil_btn.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
 
 	door = new Entity("door.png");
 	door->Pos(Vector2(1020.0f, 370.0f));
@@ -60,8 +75,14 @@ Room::Room() {
 	closetPanel->AddButton("yellow", "player_yellow.png", true, screenCenter.x + 32.5f, screenCenter.y + 50, 72, 72);
 	closetPanel->AddButton("purple", "player_purple.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
 
+	std::cout << closetPanel->GetButtonByKey("purple")->Pos().x << "\n";
+	std::cout << dresserPanel->GetButtonByKey("pencil_btn")->Pos().x << "\n";
+
 	doorPanel = new SpeechBox();
 	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480);
+
+	noKeyPanel = new SpeechBox();
+	noKeyPanel->AddText("no_key_text", "ARCADE_N.TTF", "Key needed to open", 16, 260, 480);
 }
 
 Room::~Room() {
@@ -94,8 +115,20 @@ Room::~Room() {
 	delete dresser;
 	dresser = NULL;
 
+	delete dresserPanel;
+	dresserPanel = NULL;
+
 	delete p;
 	p = NULL;
+
+	delete chest;
+	chest = NULL;
+
+	delete inv;
+	inv = NULL;
+
+	delete shelf;
+	shelf = NULL;
 }
 
 bool Room::ScreenDisabled() {
@@ -120,40 +153,86 @@ void Room::HandleCloset() {
 		case PURPLE:
 			closetPanel->GetAnimationByKey("buni_purple")->Update();
 			break;
-		default:
-			break;
 		}
 	}
+	if (showClosetPanel) {
+		if (closetPanel->GetButtonByKey("blue")->WasClicked()) {
+			currentBuni = BLUE;
+			closetPanel->GetButtonByKey("blue")->SetClicked(false);
+			p->SetColor(Player::BuniColor::BLUE);
+		}
+		else if (closetPanel->GetButtonByKey("purple")->WasClicked()) {
+			currentBuni = PURPLE;
+			closetPanel->GetButtonByKey("purple")->SetClicked(false);
+			p->SetColor(Player::BuniColor::PURPLE);
+		}
+		else if (closetPanel->GetButtonByKey("yellow")->WasClicked()) {
+			currentBuni = YELLOW;
+			closetPanel->GetButtonByKey("yellow")->SetClicked(false);
+			p->SetColor(Player::BuniColor::YELLOW);
+		}
+		else if (closetPanel->GetButtonByKey("pink")->WasClicked()) {
+			currentBuni = PINK;
+			closetPanel->GetButtonByKey("pink")->SetClicked(false);
+			p->SetColor(Player::BuniColor::PINK);
+		}
+	}
+	
+}
 
-	if (closetPanel->GetButtonByKey("blue")->WasClicked()) {
-		currentBuni = BLUE;
-		closetPanel->GetButtonByKey("blue")->SetClicked(false);
-		p->SetColor(Player::BuniColor::BLUE);
-	}
-	if (closetPanel->GetButtonByKey("purple")->WasClicked()) {
-		currentBuni = PURPLE;
-		closetPanel->GetButtonByKey("purple")->SetClicked(false);
-		p->SetColor(Player::BuniColor::PURPLE);
-	}
-	if (closetPanel->GetButtonByKey("yellow")->WasClicked()) {
-		currentBuni = YELLOW;
-		closetPanel->GetButtonByKey("yellow")->SetClicked(false);
-		p->SetColor(Player::BuniColor::YELLOW);
-	}
-	if (closetPanel->GetButtonByKey("pink")->WasClicked()) {
-		currentBuni = PINK;
-		closetPanel->GetButtonByKey("pink")->SetClicked(false);
-		p->SetColor(Player::BuniColor::PINK);
+void Room::HandleDresser() {
+	dresserPanel->Update();
+
+	if (showDresserPanel) {
+		if (dresserPanel->GetButtonByKey("apple_btn")->WasClicked()) {
+			inv->SetItem(Inventory::Item::APPLE);
+			dresserPanel->GetButtonByKey("apple_btn")->SetClicked(false);
+		}
+		else if (dresserPanel->GetButtonByKey("book_btn")->WasClicked()) {
+			inv->SetItem(Inventory::Item::BOOK);
+			dresserPanel->GetButtonByKey("book_btn")->SetClicked(false);
+		}
+		else if (dresserPanel->GetButtonByKey("fish_btn")->WasClicked()) {
+			inv->SetItem(Inventory::Item::FISH);
+			dresserPanel->GetButtonByKey("fish_btn")->SetClicked(false);
+		}
+		else if (dresserPanel->GetButtonByKey("hat_btn")->WasClicked()) {
+			inv->SetItem(Inventory::Item::HAT);
+			dresserPanel->GetButtonByKey("hat_btn")->SetClicked(false);
+		}
+		else if (dresserPanel->GetButtonByKey("pencil_btn")->WasClicked()) {
+			std::cout << "pencil\n";
+			inv->SetItem(Inventory::Item::PENCIL);
+			dresserPanel->GetButtonByKey("pencil_btn")->SetClicked(false);
+		}
+		else if (dresserPanel->GetButtonByKey("ladder_btn")->WasClicked()) {
+			inv->SetItem(Inventory::Item::LADDER);
+			dresserPanel->GetButtonByKey("ladder_btn")->SetClicked(false);
+		}
 	}
 
 }
 
-void Room::HandleDresserPanel() {
-	dresserPanel->Update();
+void Room::HandleChest() {
+	if (p->CheckCollision(chest) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
+		if (!obtainedKey) {
+			showNoKeyPanel = true;
+		}
+		else {
+			showNoKeyPanel = false;
+			openChest = true;
+		}
+	}
+	else {
+		if (!p->CheckCollision(chest))
+			showNoKeyPanel = false;
+	}
 }
 
 void Room::Update() {
 
+	inv->Update();
+	chest->Update();
 	closet->Update();
 	dresser->Update();
 	door->Update();
@@ -213,6 +292,8 @@ void Room::Update() {
 						}
 					}
 
+					shelf->Pos(Vector2(shelf->Pos().x - velocity.x, shelf->Pos().y));
+					chest->Pos(Vector2(chest->Pos().x - velocity.x, chest->Pos().y));
 					dresser->Pos(Vector2(dresser->Pos().x - velocity.x, dresser->Pos().y));
 					bed->Pos(Vector2(bed->Pos().x - velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x - velocity.x, door->Pos().y));
@@ -259,6 +340,9 @@ void Room::Update() {
 							}
 						}
 					}
+
+					shelf->Pos(Vector2(shelf->Pos().x + velocity.x, shelf->Pos().y));
+					chest->Pos(Vector2(chest->Pos().x + velocity.x, chest->Pos().y));
 					dresser->Pos(Vector2(dresser->Pos().x + velocity.x, dresser->Pos().y));
 					bed->Pos(Vector2(bed->Pos().x + velocity.x, bed->Pos().y));
 					door->Pos(Vector2(door->Pos().x + velocity.x, door->Pos().y));
@@ -344,21 +428,18 @@ void Room::Update() {
 			showDresserPanel= true;
 			screenDisabled = true;
 		}
+	}
+	if (showDresserPanel && dresserPanel->WasClosed()) {
+		showDresserPanel = false;
+		screenDisabled = false;
+		dresserPanel->SetClosed();
+	}
 
+	HandleDresser();
 
+	//chest
+	HandleChest();
 
-	}if (dresserPanel->WasClosed()) {
-			showDresserPanel = false;
-			screenDisabled = false;
-			dresserPanel->SetClosed();
-		}
-	//if (showDresserPanel && dresserPanel->WasClosed()) {
-	//	showDresserPanel = false;
-	//	screenDisabled = false;
-	//	dresserPanel->SetClosed();
-	//}
-
-	HandleDresserPanel();
 
 }
 
@@ -370,7 +451,10 @@ void Room::Render() {
 			}
 		}
 	}
-	
+
+	shelf ->Render();
+	inv->Render();
+	chest->Render();
 	dresser->Render();
 	bed->Render();
 	closet->Render();
@@ -404,4 +488,7 @@ void Room::Render() {
 
 	if (showDresserPanel)
 		dresserPanel->Render();
+
+	if (showNoKeyPanel)
+		noKeyPanel->Render();
 }

@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include "Player.h"
 #include "Entity.h"
+#include "Inventory.h"
 #include "GUI.h"
 #include <algorithm>
 
@@ -13,6 +14,7 @@ private:
 		PURPLE,
 		YELLOW
 	};
+
 	InputMgr* input;
 	Timer* timer;
 	Player* p;
@@ -40,6 +42,8 @@ private:
 
 	bool screenDisabled = false;
 
+	Inventory* inv;
+
 	//closet
 	ViewBuni currentBuni = BLUE;
 
@@ -61,6 +65,8 @@ private:
 	bool showClosetPanel=false;
 	SpeechBox* doorPanel;
 	bool showDoorPanel = false;
+	SpeechBox* noKeyPanel;
+	bool showNoKeyPanel = false;
 	Panel* dresserPanel;
 	bool showDresserPanel = false;
 
@@ -69,14 +75,18 @@ private:
 	Entity* door;
 	Entity* bed;
 	Entity* dresser;
+	Entity* chest;
+	Entity* shelf;
 
 	//exiting room
 	bool collidingWithDoor = false;
 	bool obtainedKey = false;
+	bool openChest = false;
 
 private:
 	void HandleCloset();
-	void HandleDresserPanel();
+	void HandleDresser();
+	void HandleChest();
 
 public:
 	Room();

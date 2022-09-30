@@ -181,8 +181,16 @@ AnimatedTex* Panel::GetAnimationByKey(std::string key) {
 	return animations[key];
 }
 
+void Panel::SetAllClicked(bool b) {
+	for (auto p : buttons) {
+		if (p.second != NULL)
+			p.second->SetClicked(b);
+	}
+}
+
 void Panel::AddButton(std::string key, std::string filename, bool b, int posx, int posy, int w, int h) {
 	buttons[key] = new Button(filename, w, h, posx, posy, b);
+	buttons[key]->Parent(this);
 }
 
 void Panel::AddTexture(std::string key, std::string filename, float posx, float posy) {

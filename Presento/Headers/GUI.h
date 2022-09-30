@@ -62,6 +62,8 @@ public:
 
 	bool WasClosed();
 	void SetClosed();
+	void SetAllClicked(bool b);
+
 	Vector2 GetSize();
 
 	Panel(Vector2 pos=Vector2(Graphics::Instance()->winWidth*0.5f, Graphics::Instance()->winHeight*0.5f));
