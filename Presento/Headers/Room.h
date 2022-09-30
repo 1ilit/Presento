@@ -50,6 +50,7 @@ private:
 	//for player movement
 	const float gravity = 0.7f;
 	bool isJumping = false;
+	bool isClimbing = false;
 	bool collidedTop = false;
 	bool collidingBottom = false;
 	bool collidingRight = false;
@@ -77,16 +78,19 @@ private:
 	Entity* dresser;
 	Entity* chest;
 	Entity* shelf;
+	Entity* shelf2;
+	Entity* ladder;
 
-	//exiting room
 	bool collidingWithDoor = false;
 	bool obtainedKey = false;
 	bool openChest = false;
+	bool showLadder = false;
 
 private:
 	void HandleCloset();
 	void HandleDresser();
 	void HandleChest();
+	void HandleClimbing();
 
 public:
 	Room();

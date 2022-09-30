@@ -18,18 +18,23 @@ Room::Room() {
 			}
 			currentx += 48.0f;
 		}
-
 		currenty += 48.0f;
 		currentx = 24.0f;
 	}
 
 	inv = new Inventory();
 
+	ladder = new Entity("ladder.png");
+	ladder->Pos(Vector2(p->Pos().x, 300.0f));
+
 	chest = new Entity("chest.png");
 	chest->Pos(Vector2(820.0f, 407.0f));
 
 	shelf = new Entity("shelf.png");
 	shelf->Pos(Vector2(250.0f, 170.0f));
+
+	shelf2 = new Entity("shelf2.png");
+	shelf2->Pos(Vector2(750.0f, 270.0f));
 
 	bed = new Entity("bed.png");
 	bed->Pos(Vector2(120.0f, 395.0f));
@@ -74,9 +79,6 @@ Room::Room() {
 	closetPanel->AddButton("pink", "player_pink.png", true, screenCenter.x + 125.0f, screenCenter.y - 50, 72, 72);
 	closetPanel->AddButton("yellow", "player_yellow.png", true, screenCenter.x + 32.5f, screenCenter.y + 50, 72, 72);
 	closetPanel->AddButton("purple", "player_purple.png", true, screenCenter.x + 125.0f, screenCenter.y + 50, 72, 72);
-
-	std::cout << closetPanel->GetButtonByKey("purple")->Pos().x << "\n";
-	std::cout << dresserPanel->GetButtonByKey("pencil_btn")->Pos().x << "\n";
 
 	doorPanel = new SpeechBox();
 	doorPanel->AddText("door_text", "ARCADE_N.TTF", "Coming soon...", 16, 230, 480);
@@ -124,11 +126,20 @@ Room::~Room() {
 	delete chest;
 	chest = NULL;
 
+	delete bed;
+	bed = NULL;
+
 	delete inv;
 	inv = NULL;
 
 	delete shelf;
 	shelf = NULL;
+
+	delete shelf2;
+	shelf2 = NULL;
+
+	delete ladder;
+	ladder = NULL;
 }
 
 bool Room::ScreenDisabled() {
@@ -201,7 +212,6 @@ void Room::HandleDresser() {
 			dresserPanel->GetButtonByKey("hat_btn")->SetClicked(false);
 		}
 		else if (dresserPanel->GetButtonByKey("pencil_btn")->WasClicked()) {
-			std::cout << "pencil\n";
 			inv->SetItem(Inventory::Item::PENCIL);
 			dresserPanel->GetButtonByKey("pencil_btn")->SetClicked(false);
 		}
@@ -210,7 +220,15 @@ void Room::HandleDresser() {
 			dresserPanel->GetButtonByKey("ladder_btn")->SetClicked(false);
 		}
 	}
+}
 
+void Room::HandleClimbing() {
+	if (isClimbing) {
+		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
+	}
+	if (p->Pos().y + 24.0f >= ladder->Pos().y - 130.0f) {
+		isClimbing = false;
+	}
 }
 
 void Room::HandleChest() {
@@ -292,6 +310,11 @@ void Room::Update() {
 						}
 					}
 
+					if (showLadder) {
+						ladder->Pos(Vector2(ladder->Pos().x - velocity.x, ladder->Pos().y));
+					}
+
+					shelf2->Pos(Vector2(shelf2->Pos().x - velocity.x, shelf2->Pos().y));
 					shelf->Pos(Vector2(shelf->Pos().x - velocity.x, shelf->Pos().y));
 					chest->Pos(Vector2(chest->Pos().x - velocity.x, chest->Pos().y));
 					dresser->Pos(Vector2(dresser->Pos().x - velocity.x, dresser->Pos().y));
@@ -300,6 +323,9 @@ void Room::Update() {
 					closet->Pos(Vector2(closet->Pos().x - velocity.x, closet->Pos().y));
 
 					scrollOffset += velocity.x;
+				}
+				if (isClimbing) {
+					isJumping = true;
 				}
 			}
 		}
@@ -341,6 +367,11 @@ void Room::Update() {
 						}
 					}
 
+					if (showLadder) {
+						ladder->Pos(Vector2(ladder->Pos().x + velocity.x, ladder->Pos().y));
+					}
+
+					shelf2->Pos(Vector2(shelf2->Pos().x + velocity.x, shelf2->Pos().y));
 					shelf->Pos(Vector2(shelf->Pos().x + velocity.x, shelf->Pos().y));
 					chest->Pos(Vector2(chest->Pos().x + velocity.x, chest->Pos().y));
 					dresser->Pos(Vector2(dresser->Pos().x + velocity.x, dresser->Pos().y));
@@ -350,6 +381,9 @@ void Room::Update() {
 
 					scrollOffset -= velocity.x;
 				}
+				if (isClimbing) {
+					isJumping = true;
+				}
 			}
 		}
 	}
@@ -358,22 +392,58 @@ void Room::Update() {
 			p->SetState(Player::State::IDLE_L);
 	}
 
+	//ladder
+
+	if(!showLadder)
+		ladder->Pos(Vector2(p->Pos().x, ladder->Pos().y));
+
+	//place the ladder
+	if (input->KeyPressed(SDL_SCANCODE_P) && !showLadder) {
+		showLadder = true;
+	}
+
+	//pick the ladder up
+	if (input->KeyPressed(SDL_SCANCODE_O) && showLadder && p->CheckCollision(ladder)) {
+		showLadder = false;
+	}
+
 	if (input->KeyPressed(SDL_SCANCODE_W)) {
-		if (!isJumping) {
-			isJumping = true;
-			collidingBottom = false;
-			velocity.y = 15.0f;
+
+		if (!showLadder || !(showLadder && p->CheckCollision(ladder))) {
+			if (!isJumping) {
+				isJumping = true;
+				collidingBottom = false;
+				velocity.y = 15.0f;
+			}
+
+			if (isJumping) {
+				if (dirRight)
+					p->SetState(Player::State::JUMPING_R);
+				else
+					p->SetState(Player::State::JUMPING_L);
+			}
 		}
 
-		if (isJumping) {
-			if (dirRight)
-				p->SetState(Player::State::JUMPING_R);
-			else
-				p->SetState(Player::State::JUMPING_L);
+	}
+
+	if (input->KeyDown(SDL_SCANCODE_W)) {
+		if (showLadder && p->CheckCollision(ladder)) {
+			isClimbing = true;
+			if(p->Pos().y+24.0f<=ladder->Pos().y-30.0f)
+				p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
+			collidingBottom = false;
+		}
+	}
+	if (input->KeyDown(SDL_SCANCODE_S)) {
+		if (showLadder && p->CheckCollision(ladder)) {
+			isClimbing = true;
+			p->Pos(Vector2(p->Pos().x, p->Pos().y + velocity.x));
 		}
 	}
 
-	if (isJumping || !collidingBottom) {
+
+
+	if (isJumping || !collidingBottom && (!isClimbing && p->CheckCollision(ladder))) {
 		p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.y));
 		velocity.y -= gravity;
 	}
@@ -451,7 +521,8 @@ void Room::Render() {
 			}
 		}
 	}
-
+	
+	shelf2->Render();
 	shelf ->Render();
 	inv->Render();
 	chest->Render();
@@ -459,6 +530,9 @@ void Room::Render() {
 	bed->Render();
 	closet->Render();
 	door->Render();
+
+	if(showLadder)
+		ladder->Render();
 
 	if (showClosetPanel) {
 		closetPanel->Render();
