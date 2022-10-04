@@ -120,9 +120,8 @@ Room::Room() {
 	finalPanel = new Panel();
 	finalPanel->Parent(this);
 
-	finalPanel->AddTexture("giraffe", "giraffe.png", screenCenter.x, screenCenter.y);
-	finalPanel->GetTextureByKey("giraffe")->Scale(Vector2(2.0f, 2.0f));
-	finalPanel->AddText("hehe", "ARCADE_N.TTF", "Never said it would be real hehe", 12, screenCenter.x, screenCenter.y+120.0f);
+	finalPanel->AddTexture("gift", "gift_box.png", screenCenter.x, screenCenter.y);
+	finalPanel->GetTextureByKey("gift")->Scale(Vector2(2.0f, 2.0f));
 	finalPanel->AddText("hbd", "ARCADE_N.TTF", "Happy Birthday!", 12, screenCenter.x, screenCenter.y - 120.0f);
 }
 
@@ -564,17 +563,31 @@ void Room::Update() {
 
 	}
 
-	if (input->KeyDown(SDL_SCANCODE_W)) {
+	if (input->KeyDown(SDL_SCANCODE_W) ) {
+		
 		if (showLadder && p->CheckCollision(ladder)) {
-			isClimbing = true;
-			p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
-			collidingBottom = false;
+			if (p->Pos().y >= ladder->Pos().y - 140.0f) {
+				isClimbing = true;
+				p->SetState(Player::CLIMBING);
+				p->ResumeClimbing();
+				p->Pos(Vector2(p->Pos().x, p->Pos().y - velocity.x));
+				collidingBottom = false;
+			}
 		}
 	}
-	if (input->KeyDown(SDL_SCANCODE_S)) {
+	else if (input->KeyDown(SDL_SCANCODE_S)) {
+		
 		if (showLadder && p->CheckCollision(ladder)) {
 			isClimbing = true;
+			p->SetState(Player::CLIMBING);
+			p->ResumeClimbing();
 			p->Pos(Vector2(p->Pos().x, p->Pos().y + velocity.x));
+		}
+	}
+	else {
+		if (showLadder && p->CheckCollision(ladder)) {
+			isClimbing = true;
+			p->StopClimbing();
 		}
 	}
 
@@ -614,10 +627,8 @@ void Room::Update() {
 	if (p->CheckCollision(closet) && input->KeyReleased(SDL_SCANCODE_RETURN)) {
 		showClosetPanel = true;
 		screenDisabled = true;
-		std::cout << showClosetPanel<<"\n";
 	}
 	
-
 	if (showClosetPanel && closetPanel->WasClosed()) {
 		showClosetPanel = false;
 		screenDisabled = false;

@@ -147,7 +147,24 @@ Player::Player(Vector2 startPos) {
 	inAirLYellow = new AnimatedTex("in_air_left_yellow.png", 0, 0, 48, 48, 1, 0.6f, AnimatedTex::anim_d::horizontal);
 	inAirLYellow->Parent(this);
 	inAirLYellow->Pos(VEC2_ZERO);
-	
+
+	//climbing
+
+	climbingBlue = new AnimatedTex("climbing_blue.png", 0, 0, 48, 48, 2, 0.6f, AnimatedTex::anim_d::horizontal);
+	climbingBlue->Parent(this);
+	climbingBlue->Pos(VEC2_ZERO);
+
+	climbingPink = new AnimatedTex("climbing_pink.png", 0, 0, 48, 48, 2, 0.6f, AnimatedTex::anim_d::horizontal);
+	climbingPink->Parent(this);
+	climbingPink->Pos(VEC2_ZERO);
+
+	climbingPurple = new AnimatedTex("climbing_purple.png", 0, 0, 48, 48, 2, 0.6f, AnimatedTex::anim_d::horizontal);
+	climbingPurple->Parent(this);
+	climbingPurple->Pos(VEC2_ZERO);
+
+	climbingYellow = new AnimatedTex("climbing_yellow.png", 0, 0, 48, 48, 2, 0.6f, AnimatedTex::anim_d::horizontal);
+	climbingYellow->Parent(this);
+	climbingYellow->Pos(VEC2_ZERO);
 
 	AddCollider(idleRBlue->ScaledDimensions());
 
@@ -254,6 +271,29 @@ Player::~Player() {
 
 	delete inAirLYellow;
 	inAirLYellow = NULL;
+
+	//climbing
+
+	delete climbingYellow;
+	climbingYellow = NULL;
+
+	delete climbingPurple;
+	climbingPurple = NULL;
+
+	delete climbingYellow;
+	climbingYellow = NULL;
+
+	delete climbingBlue;
+	climbingBlue = NULL;
+
+}
+
+void Player::ResumeClimbing() {
+	stop = false;
+}
+
+void Player::StopClimbing() {
+	stop = true;
 }
 
 void Player::SetState(State state) {
@@ -406,6 +446,28 @@ void Player::Update() {
 			break;
 		}
 		break;
+	case CLIMBING:
+		switch (currentColor) {
+		case BLUE:
+			if(!stop)
+				climbingBlue->Update();
+			break;
+		case PINK:
+			if (!stop)
+				climbingPink->Update();
+			break;
+		case PURPLE:
+			if (!stop)
+				climbingPurple->Update();
+			break;
+		case YELLOW:
+			if (!stop)
+				climbingYellow->Update();
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
@@ -546,6 +608,24 @@ void Player::Render() {
 			break;
 		case YELLOW:
 			inAirLYellow->Render();
+		default:
+			break;
+		}
+		break;
+	case CLIMBING:
+		switch (currentColor) {
+		case BLUE:
+			climbingBlue->Render();
+			break;
+		case PINK:
+			climbingPink->Render();
+			break;
+		case PURPLE:
+			climbingPurple->Render();
+			break;
+		case YELLOW:
+			climbingYellow->Render();
+			break;
 		default:
 			break;
 		}

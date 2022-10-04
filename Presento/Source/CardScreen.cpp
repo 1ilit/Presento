@@ -5,7 +5,7 @@ CardScreen::CardScreen() {
 	input = InputMgr::Instance();
 	timer = Timer::Instance();
 
-	part1 = new Texture("Happy Birthday, Buni!", "ARCADE_N.TTF", 18, {255, 255, 255, 255});
+	part1 = new Texture("Happy Birthday, XXX!", "ARCADE_N.TTF", 18, {255, 255, 255, 255});
 	part1->Pos(Vector2(Graphics::Instance()->winWidth*0.5f, 150.0f));
 	part1->Parent(this);
 
@@ -17,7 +17,7 @@ CardScreen::CardScreen() {
 	part3->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 250.0f));
 	part3->Parent(this);
 
-	part4 = new Texture("- Ubi <3", "ARCADE_N.TTF", 18, { 255, 255, 255, 255 });
+	part4 = new Texture("- XXX <3", "ARCADE_N.TTF", 18, { 255, 255, 255, 255 });
 	part4->Pos(Vector2(Graphics::Instance()->winWidth * 0.5f, 300.0f));
 	part4->Parent(this);
 

@@ -12,7 +12,8 @@ public:
 		WALKING_R,
 		WALKING_L,
 		IN_AIR_R,
-		IN_AIR_L
+		IN_AIR_L,
+		CLIMBING
 	};
 
 	enum BuniColor {
@@ -59,14 +60,22 @@ private:
 	AnimatedTex* inAirRYellow;
 	AnimatedTex* inAirLYellow;
 
+	AnimatedTex* climbingBlue;
+	AnimatedTex* climbingPink;
+	AnimatedTex* climbingPurple;
+	AnimatedTex* climbingYellow;
+
 	State currentState = IDLE_R;
 	BuniColor currentColor = BLUE;
+	bool stop = false;
 	
 public:
 
 	Player(Vector2 startPos);
 	~Player();
 
+	void StopClimbing();
+	void ResumeClimbing();
 	void SetState(State state);
 	void SetColor(BuniColor color);
 	bool JumpAnimDone();
